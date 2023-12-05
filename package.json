@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/mleblanc94/new-hampshire-crowdfunding/issues"
   },
-  "homepage": "https://github.com/mleblanc94/new-hampshire-crowdfunding#readme"
+  "homepage": "https://github.com/mleblanc94/new-hampshire-crowdfunding#readme",
+  "dependencies": {
+    "tachyons": "^4.12.0"
+  }
 }
