@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Technology",
+        "description": "Projects related to technology and innovation"
+      },
+      {
+        "name": "Art",
+        "description": "Creative projects in the field of art"
+      },
+      {
+        "name": "Health",
+        "description": "Projects promoting health and well-being"
+      },
+      {
+        "name": "Startup",
+        "description": "Startup is a new business venture."
+      },
+      {
+        "name": "Social Causes",
+        "description": "A campaign to raise money for a charity or non-profit organization. Or you could use it to finance a community project, such as a playground or public park"
+      },
+      {
+        "name": "Personal Projects",
+        "description": "Personal projects. For example, you could use it to finance a trip, pay for medical treatment, or even fund your childs education."
+      },
+      {
+        "name": "Risky Ventures",
+        "description": "you have an idea for a new product or service that you think could be successful, but too risky for traditional investors."
+      }
+  ]
