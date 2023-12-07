@@ -10,6 +10,10 @@ const projectSchema = new Schema({
         type: String,
         required: true
     },
+    imageName: {
+        type: String,
+        required: true
+    },
     creator: {//this is the foreign key
         type: Schema.Types.ObjectId, ref: 'User', required: true
     },
