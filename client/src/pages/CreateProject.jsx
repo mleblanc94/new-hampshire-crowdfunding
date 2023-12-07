@@ -1,12 +1,23 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useMutation } from '@apollo/client';
+import {ADD_PROJECT} from '../utils/mutations';
+import {Cloudinary} from "@cloudinary/url-gen";
 
 const CreateProject = () => {
   const [projectData, setProjectData] = useState({
     title: '',
     description: '',
     category: '',
-    imageUrl: null,
+    imageUpload: null,
+  });
+
+  const [createProject, { loading, error }] = useMutation(ADD_PROJECT, {
+    onCompleted: (data) => {
+      console.log('Project created successfully:', data);
+    },
+    onError: (error) => {
+      console.error('Error creating project:', error);
+    },
   });
 
   const handleInputChange = (event) => {
@@ -16,28 +27,28 @@ const CreateProject = () => {
 
   const handlePictureChange = (event) => {
     const selectedFile = event.target.files[0];
-    setProjectData({ ...projectData, imageUrl: selectedFile });
+    setProjectData({ ...projectData, imageUpload: selectedFile });
   };
 
   const handleSubmit = async (event) => {
+
+
     event.preventDefault();
 
-    try {
-      const formData = new FormData();
-      formData.append('title', projectData.title);
-      formData.append('description', projectData.description);
-      formData.append('category', projectData.category);
-      formData.append('imageUpload', projectData.imageUrl);
+    // Put cloudinary code here
 
-      await axios.post('/api/projects', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+    try {
+      const { title, description, category, imageUpload } = projectData;
+      await createProject({
+        variables: {
+          title,
+          description,
+          category,
+          imageUpload,
         },
       });
-
-      console.log('Project created successfully!');
     } catch (error) {
-      console.error('Error creating project:', error);
+      console.error('Error:', error);
     }
   };
 
@@ -112,6 +123,7 @@ const CreateProject = () => {
                 />
               </div>
             </fieldset>
+            {error && <p>Error: {error.message}</p>}
           </form>
         </main>
       </article>
@@ -120,6 +132,7 @@ const CreateProject = () => {
 };
 
 export default CreateProject;
+
 
 
 

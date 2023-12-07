@@ -3,4 +3,13 @@
     margin: 5px;
     background-color: #9eebcf;
     border-radius: 5px;
+    cursor: pointer;
+}
+
+.signup-button {
+    margin-right: 10px;
+}
+
+a {
+    text-decoration: none;
 }

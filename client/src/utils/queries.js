@@ -1,24 +1,31 @@
-// NEEDS TO BE EDITED TO FIT OUR PROJECT
-
 import { gql } from '@apollo/client';
 
-export const QUERY_TECH = gql`
-  query tech {
-    tech {
+export const QUERY_USER = gql`
+  query user($username: String!) {
+    user(username: $username) {
       _id
-      name
+      username
+      email
     }
   }
 `;
 
-export const QUERY_MATCHUPS = gql`
-  query matchups($_id: String) {
-    matchups(_id: $_id) {
+export const QUERY_PROJECTS = gql`
+  query getProjects {
+    projects {
       _id
-      tech1
-      tech2
-      tech1_votes
-      tech2_votes
+      title
+      description
+      category
+    }
+  }
+`;
+
+export const QUERY_PROFILE = gql`
+  query user($username: String!) {
+    user(username: $username) {
+        projects
+        favorited
     }
   }
 `;

@@ -1,32 +1,44 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import 'tachyons';
 import { LOGIN_USER } from '../utils/mutations';
+import 'tachyons';
 
-const Signin = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+import Auth from '../utils/auth';
 
-  const [login, { loading, error }] = useMutation(LOGIN_USER, {
-    onCompleted: (data) => {
-      // Handle successful login here, access response data as needed
-      console.log('Login Successful:', data);
-      // You might store token in local storage or state after successful login
-    },
-    onError: (error) => {
-      // Handle login error
-      console.error('Login Error:', error);
-    },
-  });
+const Signin = (props) => {
+  const [formState, setFormState] = useState({ email: '', password: '' });
+  const [login, { error, data }] = useMutation(LOGIN_USER);
 
+  // update state based on form input changes
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  // submit form
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    // Call the login mutation with provided username and password
+    console.log(formState);
     try {
-      await login({ variables: { username, password } });
-    } catch (error) {
-      console.error('Error:', error);
+      const { data } = await login({
+        variables: { ...formState },
+      });
+
+      Auth.login(data.login.token);
+    } catch (e) {
+      console.error(e);
     }
+
+    // clear form values
+    setFormState({
+      email: '',
+      password: '',
+    });
   };
 
   return (
@@ -48,8 +60,8 @@ const Signin = () => {
                     type="text"
                     id="login"
                     name="login"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={formState.email}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="mv3">
@@ -61,16 +73,15 @@ const Signin = () => {
                     type="password"
                     id="password"
                     name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formState.password}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="tc">
                   <input
                     className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                     type="submit"
-                    value={loading ? 'Logging in...' : 'Login'}
-                    disabled={loading}
+                    value={'Login'}
                   />
                 </div>
               </fieldset>

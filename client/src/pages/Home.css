@@ -1,0 +1,19 @@
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%; /* Set the width to 80% of the viewport */
+    height: 80%; /* Set the height to 80% of the viewport */
+    max-width: 800px; /* Set a maximum width for larger screens */
+    max-height: 600px; /* Set a maximum height for larger screens */
+    border: 1px solid black;
+    padding: 20px;
+    background-color: white;
+    z-index: 1000; /* Ensure it's on top of other elements */
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  }
+
+  .close {
+    cursor: pointer;
+  }
