@@ -18,11 +18,36 @@ const typeDefs = gql`
         
     }
 
+    type ProjectInput {
+        title: String!
+        description: String!
+        creator: String!
+        fundingGoal: Int!
+        currentFunding: Int
+        backers: [User]
+        interestedIn: [User]
+        status: String
+        projectType: String!
+        createdAt: String
+        updatedAt: String
+        imageName: String!
+    }
+
     type User {
         _id: ID!
         username: String!
         email: String!
         password: String!
+    }
+
+    type UserInput {
+        username: String!
+        email: String!
+        password: String!
+    }
+
+    type Checkout {
+        session: ID
     }
 
     type Queries {
