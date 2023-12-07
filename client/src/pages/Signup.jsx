@@ -1,33 +1,43 @@
-import React, { useState } from 'react';
-import { useMutation, gql } from '@apollo/client';
-import 'tachyons';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
 
+import Auth from '../utils/auth';
+import 'tachyons';
+
 const Signup = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const [signup, { loading, error }] = useMutation(ADD_USER, {
-    onCompleted: (data) => {
-      // Handle successful signup here, access response data as needed
-      console.log('Signup Successful:', data);
-      // You might navigate to a different page or perform other actions after successful signup
-    },
-    onError: (error) => {
-      // Handle signup error
-      console.error('Signup Error:', error);
-    },
-  });
-
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-    // Call the signup mutation with provided email and password
-    try {
-      await signup({ variables: { email, password } });
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+    const [formState, setFormState] = useState({
+      username: '',
+      email: '',
+      password: '',
+    });
+    const [addUser, { error, data }] = useMutation(ADD_USER);
+  
+    const handleChange = (event) => {
+      const { name, value } = event.target;
+  
+      setFormState({
+        ...formState,
+        [name]: value,
+      });
+    };
+  
+    const handleFormSubmit = async (event) => {
+      event.preventDefault();
+      console.log(formState);
+  
+      try {
+        const { data } = await addUser({
+          variables: { ...formState },
+        });
+  
+        Auth.login(data.addUser.token);
+      } catch (e) {
+        console.error(e);
+      }
+    };
 
   return (
     <div className="tc">
@@ -48,8 +58,21 @@ const Signup = () => {
                     type="email"
                     id="email"
                     name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={formState.email}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="mt3">
+                  <label className="db fw6 lh-copy f6" htmlFor="username">
+                    Username:
+                  </label>
+                  <input
+                    className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                    type="text"
+                    id="username"
+                    name="username"
+                    value={formState.username}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="mv3">
@@ -61,16 +84,15 @@ const Signup = () => {
                     type="password"
                     id="password"
                     name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formState.password}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="tc">
                   <input
                     className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                     type="submit"
-                    value={loading ? 'Signing Up...' : 'Sign Up'}
-                    disabled={loading}
+                    value={'Sign Up'}
                   />
                 </div>
               </fieldset>

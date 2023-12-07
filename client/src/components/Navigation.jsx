@@ -18,7 +18,7 @@ const Navigation = () => {
 
   return (
     <nav>
-      <ul className="flex justify-between list ma0 sans-serif f3 lh-copy bg-navy pv3">
+      <ul className="flex justify-between list ma0 sans-serif f3 lh-copy bg-navy pv3 links-ul">
         <li>
           <Link to="/" className={`near-white ${isCurrentPage('/') ? 'fw8' : ''}`}>
             Home
