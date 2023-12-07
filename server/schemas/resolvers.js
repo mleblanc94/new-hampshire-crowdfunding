@@ -1,5 +1,5 @@
 
-const { User, Project, ProjectType } = require('./models');
+const { User, Project,  } = require('./models');
 
 const resolvers = {
   Query: {
@@ -16,8 +16,8 @@ const resolvers = {
       await newUser.save();
       return newUser;
     },
-    createProject: async (_, { title, description, creator, fundingGoal, projectType }) => {
-      const newProject = new Project({ title, description, creator, fundingGoal, projectType });
+    createProject: async (_, { title, description, creator, fundingGoal,  }) => {
+      const newProject = new Project({ title, description, creator, fundingGoal,  });
       await newProject.save();
       return newProject;
     },
@@ -28,9 +28,6 @@ const resolvers = {
     },
     backers: async (parent) => {
       return await User.find({ _id: { $in: parent.backers } });
-    },
-    projectType: async (parent) => {
-      return await ProjectType.findById(parent.projectType);
     },
   },
 };
