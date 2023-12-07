@@ -1,4 +1,5 @@
 import React from 'react';
+import 'tachyons';
 
 const DonateProfile = () => {
   // Sample donation data (replace this with actual data)
