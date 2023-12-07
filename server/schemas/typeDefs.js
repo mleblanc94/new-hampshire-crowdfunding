@@ -13,12 +13,6 @@ const typeDefs = `
         updatedAt: String
     }
 
-    type ProjectType {
-        _id: ID!
-        name: String!
-        description: String
-    }
-
     type User {
         _id: ID!
         username: String!
@@ -26,24 +20,25 @@ const typeDefs = `
         password: String!
     }
 
-    type Quaries {
+    type Queries {
         getProjectById(id: ID!): Project
         getAllProjects: [Project]
-        getProjectTypeById(id: ID!): ProjectType
-        getAllProjectTypes: [ProjectType]
         getUserById(id: ID!): User
         getAllUsers: [User]
+        getinterestedIn(projectId: ID!): [User]
+        getBackers(projectId: ID!): [User]
     }
 
     type Mutation {
         createProject(input: ProjectInput!): Project
         updateProject(id: ID!, input: ProjectInput!): Project
         deleteProject(id: ID!): Project
-        createProjectType(input: ProjectTypeInput!): ProjectType
-        updateProjectType(id: ID!, input: ProjectTypeInput!): ProjectType
-        deleteProjectType(id: ID!): ProjectType
         createUser(input: UserInput!): User
         updateUser(id: ID!, input: UserInput!): User
         deleteUser(id: ID!): User
+        addTointerestedIn(projectId: ID!, userId: ID!): Project
+        removeFrominterestedIn(projectId: ID!, userId: ID!): Project
+        addBackerToProject(projectId: ID!, userId: ID!): Project
+        removeBackerFromProject(projectId: ID!, userId: ID!): Project
       }
 `
