@@ -1,19 +1,44 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const CreateProject = () => {
-  const [picture, setPicture] = useState(null);
+  const [projectData, setProjectData] = useState({
+    title: '',
+    description: '',
+    category: '',
+    imageUrl: null,
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setProjectData({ ...projectData, [name]: value });
+  };
 
   const handlePictureChange = (event) => {
     const selectedFile = event.target.files[0];
-    setPicture(selectedFile);
+    setProjectData({ ...projectData, imageUrl: selectedFile });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Here you can handle the form submission, including the picture file (stored in 'picture' state)
-    // For example, you can upload the image using FormData or perform further actions.
-    console.log('Picture:', picture);
-    // Add your logic to handle form submission and image upload
+
+    try {
+      const formData = new FormData();
+      formData.append('title', projectData.title);
+      formData.append('description', projectData.description);
+      formData.append('category', projectData.category);
+      formData.append('imageUpload', projectData.imageUrl);
+
+      await axios.post('/api/projects', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log('Project created successfully!');
+    } catch (error) {
+      console.error('Error creating project:', error);
+    }
   };
 
   return (
@@ -24,7 +49,9 @@ const CreateProject = () => {
             <fieldset id="createProject" className="ba b--transparent ph0 mh0">
               <legend className="f4 fw6 ph0 mh0">Create a Project</legend>
               <div className="mv3">
-                <label className="db fw6 lh-copy f6" htmlFor="imageUpload">Upload Picture:</label>
+                <label className="db fw6 lh-copy f6" htmlFor="imageUpload">
+                  Upload Picture:
+                </label>
                 <input
                   type="file"
                   id="imageUpload"
@@ -35,29 +62,38 @@ const CreateProject = () => {
                 />
               </div>
               <div className="mv3">
-                <label className="db fw6 lh-copy f6" htmlFor="title">Title:</label>
+                <label className="db fw6 lh-copy f6" htmlFor="title">
+                  Title:
+                </label>
                 <input
                   className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   type="text"
                   id="title"
                   name="title"
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="mv3">
-                <label className="db fw6 lh-copy f6" htmlFor="description">Description:</label>
+                <label className="db fw6 lh-copy f6" htmlFor="description">
+                  Description:
+                </label>
                 <textarea
                   className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   id="description"
                   name="description"
                   rows="5"
+                  onChange={handleInputChange}
                 ></textarea>
               </div>
               <div className="mv3">
-                <label className="db fw6 lh-copy f6" htmlFor="category">Category:</label>
+                <label className="db fw6 lh-copy f6" htmlFor="category">
+                  Category:
+                </label>
                 <select
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   id="category"
                   name="category"
+                  onChange={handleInputChange}
                 >
                   <option value="Technology">Technology</option>
                   <option value="Art">Art</option>
@@ -84,6 +120,7 @@ const CreateProject = () => {
 };
 
 export default CreateProject;
+
 
 
 
