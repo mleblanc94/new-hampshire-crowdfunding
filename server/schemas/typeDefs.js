@@ -11,6 +11,7 @@ const typeDefs = `
         projectType: String!
         createdAt: String
         updatedAt: String
+        imageName: String!
     }
 
     type User {
@@ -39,6 +40,5 @@ const typeDefs = `
         addTointerestedIn(projectId: ID!, userId: ID!): Project
         removeFrominterestedIn(projectId: ID!, userId: ID!): Project
         addBackerToProject(projectId: ID!, userId: ID!): Project
-        removeBackerFromProject(projectId: ID!, userId: ID!): Project
       }
 `
