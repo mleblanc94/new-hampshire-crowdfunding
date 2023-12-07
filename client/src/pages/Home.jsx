@@ -1,7 +1,6 @@
 import React from 'react';
 import 'tachyons';
 
-// Sample data for projects
 const projects = [
   { title: 'Project 1', description: 'Description of Project 1', image: 'project1.jpg' },
   { title: 'Project 2', description: 'Description of Project 2', image: 'project2.jpg' },
@@ -9,7 +8,6 @@ const projects = [
   { title: 'Project 4', description: 'Description of Project 4', image: 'project4.jpg' },
   { title: 'Project 5', description: 'Description of Project 5', image: 'project5.jpg' },
   { title: 'Project 6', description: 'Description of Project 6', image: 'project6.jpg' },
-  // Add more projects here...
 ];
 
 const Home = () => {

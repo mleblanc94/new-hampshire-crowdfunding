@@ -1,0 +1,6 @@
+.signin-button, .signup-button {
+    color: black;
+    margin: 5px;
+    background-color: #9eebcf;
+    border-radius: 5px;
+}

@@ -2,9 +2,8 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import App from './App.jsx';
-import BusinessProfile from './pages/BusinessProfile.jsx';
+import Profile from './pages/Profile.jsx';
 import CreateProject from './pages/CreateProject.jsx';
-import DonateProfile from './pages/DonateProfile.jsx';
 import Signin from './pages/Signin.jsx';
 import Signup from './pages/Signup.jsx';
 import Home from './pages/Home';
@@ -26,11 +25,8 @@ const router = createBrowserRouter([
         path: '/signup',
         element: <Signup />
       }, {
-        path: '/business',
-        element: <BusinessProfile />
-      }, {
-        path: 'donate',
-        element: <DonateProfile />
+        path: '/profile',
+        element: <Profile />
       }, {
         path: 'create',
         element: <CreateProject />
