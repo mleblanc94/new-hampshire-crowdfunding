@@ -1,17 +1,21 @@
-const typeDefs = `
-    type Projects {
+const { gql } = require('apollo-server-express');
+
+const typeDefs = gql`
+    type Project {
         _id: ID!
         title: String!
         description: String!
         creator: String!
         fundingGoal: Int!
         currentFunding: Int
-        backers: String
+        backers: [User]
+        interestedIn: [User] 
         status: String
         projectType: String!
         createdAt: String
         updatedAt: String
         imageName: String!
+        
     }
 
     type User {
@@ -42,3 +46,5 @@ const typeDefs = `
         addBackerToProject(projectId: ID!, userId: ID!): Project
       }
 `
+
+module.exports = typeDefs;
