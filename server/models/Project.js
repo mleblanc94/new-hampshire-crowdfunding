@@ -24,6 +24,9 @@ const projectSchema = new Schema({
     backers: [{//this is array of foreign key for the backers/funders
         type: Schema.Types.ObjectId, ref: 'User'
     }],
+    interestedIn: [{//this is array of foreign key for the interested users in the projects
+        type: Schema.Types.ObjectId, ref: 'User'
+    }],
     status: {//this is the status of the project
         type: String,
         enum: ['active', 'closed'], default: 'active'
