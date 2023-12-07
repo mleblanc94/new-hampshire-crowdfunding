@@ -12,24 +12,3 @@ db.once('open', async () => {
   console.log('all done!');
   process.exit(0);
 });
-
-// // Function to seed project types
-// const seedProjectTypes = async () => {
-//   try {
-//     // Clean the existing project types
-//     await cleanDB();
-
-//     // Insert new project types
-//     const insertedProjectTypes = await ProjectType.insertMany(projectTypeSeeds);
-
-//     console.log('Project types seeded successfully:', insertedProjectTypes);
-//   } catch (error) {
-//     console.error('Error seeding project types:', error);
-//   } finally {
-//     // Close the database connection
-//     mongoose.connection.close();
-//   }
-// };
-
-// // Run the seeding function
-// seedProjectTypes();
