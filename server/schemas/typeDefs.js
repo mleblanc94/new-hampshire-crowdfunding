@@ -53,12 +53,10 @@ const typeDefs = gql`
     }
 
     type Queries {
-        getProjectById(id: ID!): Project
         getAllProjects: [Project]
-        getUserById(id: ID!): User
-        getAllUsers: [User]
-        getinterestedIn(projectId: ID!): [User]
-        getBackers(projectId: ID!): [User]
+        getinterestedIn(interestedIn: ID!): [Project]
+        getbackedProjects(backers: ID!): [Project]
+        getcreatedProjects(creator: ID!): [project]
     }
 
     type Mutation {
