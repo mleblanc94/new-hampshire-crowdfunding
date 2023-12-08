@@ -1,4 +1,14 @@
 const { User, Project } = require('./models');
+const { AuthenticationError } = require('../utils/auth')
+const jwt = require('jsonwebtoken');
+
+const secret = 'mysecretsshhhh';
+const expiration = '2h';
+
+const signToken = ({ username, email, _id }) => {
+  const payload = { username, email, _id };
+  return jwt.sign({ data: payload }, secret, { expiresIn: expiration})
+}
 
 const resolvers = {
   Query: {
@@ -52,6 +62,41 @@ const resolvers = {
     removeBackerFromProject: async (_, { projectId, userId }) => {
       const project = await Project.findByIdAndUpdate(projectId, { $pull: { backers: userId } }, { new: true });
       return project;
+    },
+    loginUser: async (_, { email, password }) => {
+      const user = await User.findOne({ email });
+      if (!user) {
+        throw new AuthenticationError;
+      }
+
+      const isValidPassword = await user.isCorrectPassword;
+
+      if (!isValidPassword) {
+        throw AuthenticationError
+      }
+
+      const token = signToken({ 
+        username: user.username,
+        email: user.email,
+        _id: user_id
+      })
+       
+      return { token, user};
+    },
+
+    addUser: async (_, { username, email, password }) => {
+      const user = await User.create({ username, email, password });
+      if (!user) {
+        throw new AuthenticationError;
+      }
+
+      const token = signToken({ 
+        username: user.username,
+        email: user.email,
+        _id: user._id,
+      });
+
+      return { token, user };
     },
   
   },
