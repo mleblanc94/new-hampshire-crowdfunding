@@ -1,5 +1,14 @@
 const { User, Project } = require('./models');
-const bcrypt = require('bcrypt');
+const { AuthenticationError } = require('../utils/auth')
+const jwt = require('jsonwebtoken');
+
+const secret = 'mysecretsshhhh';
+const expiration = '2h';
+
+const signToken = ({ username, email, _id }) => {
+  const payload = { username, email, _id };
+  return jwt.sign({ data: payload }, secret, { expiresIn: expiration})
+}
 
 const resolvers = {
   Query: {
@@ -57,15 +66,37 @@ const resolvers = {
     loginUser: async (_, { email, password }) => {
       const user = await User.findOne({ email });
       if (!user) {
-        throw new Error('User not found');
+        throw new AuthenticationError;
       }
-      const isValidPassword = await bcrypt.compare(password, user.password);
+
+      const isValidPassword = await user.isCorrectPassword;
 
       if (!isValidPassword) {
-        throw new Error('Invalid password');
+        throw AuthenticationError
       }
-      
-      return user;
+
+      const token = signToken({ 
+        username: user.username,
+        email: user.email,
+        _id: user_id
+      })
+       
+      return { token, user};
+    },
+
+    addUser: async (_, { username, email, password }) => {
+      const user = await User.create({ username, email, password });
+      if (!user) {
+        throw new AuthenticationError;
+      }
+
+      const token = signToken({ 
+        username: user.username,
+        email: user.email,
+        _id: user._id,
+      });
+
+      return { token, user };
     },
   
   },
