@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import ProjectDetails from './ProjectDetails'; // Create this component separately
-import { useQuery } from '@apollo/client';
-import { QUERY_PROJECTS } from '../utils/queries';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import 'tachyons';
-import './Home.css'
+import './Home.css';
 
 const Home = () => {
-//   const { loading, data } = useQuery(QUERY_PROJECTS);
-//   const projects = data?.projects || [];
-  
   const [selectedProject, setSelectedProject] = useState(null);
   const [favorites, setFavorites] = useState([]);
 
@@ -20,7 +17,7 @@ const Home = () => {
     setFavorites([...favorites, project]);
   };
 
-const projects = [
+  const projects = [
     { title: 'Project 1', description: 'Description of Project 1', image: 'project1.jpg' },
     { title: 'Project 2', description: 'Description of Project 2', image: 'project2.jpg' },
     { title: 'Project 3', description: 'Description of Project 3', image: 'project3.jpg' },
@@ -28,6 +25,9 @@ const projects = [
     { title: 'Project 5', description: 'Description of Project 5', image: 'project5.jpg' },
     { title: 'Project 6', description: 'Description of Project 6', image: 'project6.jpg' },
   ];
+
+  // Stripe public key (replace with your actual Stripe public key)
+  const stripePromise = loadStripe('your_stripe_public_key');
 
   return (
     <div className="pa4">
@@ -58,11 +58,14 @@ const projects = [
       </div>
 
       {selectedProject && (
-        <ProjectDetails
-          project={selectedProject}
-          addToFavorites={addToFavorites}
-          closeModal={() => setSelectedProject(null)}
-        />
+        <Elements stripe={stripePromise}>
+          {/* Wrap the ProjectDetails component with Elements provider */}
+          <ProjectDetails
+            project={selectedProject}
+            addToFavorites={addToFavorites}
+            closeModal={() => setSelectedProject(null)}
+          />
+        </Elements>
       )}
     </div>
   );

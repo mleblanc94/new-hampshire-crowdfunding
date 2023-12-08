@@ -1,13 +1,40 @@
-import React from 'react';
-import StripeCheckout from 'react-stripe-checkout'; // Import Stripe Checkout component
-import 'tachyons';
-import './Home.css'
+import React, { useState } from 'react';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import './Home.css';
 
 const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
-  const handleToken = (token) => {
-    // Handle Stripe token (make API call to process payment)
-    console.log(token);
-    // Add your Stripe payment processing logic here
+  const [donationAmount, setDonationAmount] = useState(0);
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleDonationChange = (event) => {
+    const amount = parseFloat(event.target.value);
+    const roundedAmount = Math.round(amount); // Round to the nearest dollar
+    setDonationAmount(isNaN(roundedAmount) ? 0 : roundedAmount); // Update the state with rounded amount
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      // Stripe.js has not yet loaded.
+      return;
+    }
+
+    const cardElement = elements.getElement(CardElement);
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+    });
+
+    if (error) {
+      console.error('Error:', error);
+    } else {
+      // On successful token creation, handle the payment method or token on your backend
+      // You'll need to send this 'paymentMethod.id' to your server for further processing
+      console.log('PaymentMethod:', paymentMethod);
+    }
   };
 
   return (
@@ -20,17 +47,30 @@ const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
         <p>Category: {project.category}</p>
         <button onClick={() => addToFavorites(project)}>Add to Favorites</button>
 
-        {/* Stripe Checkout Form */}
-        <StripeCheckout
-          stripeKey="YOUR_STRIPE_PUBLIC_KEY" // Replace with your Stripe public key
-          token={handleToken}
-          amount={1000} // Amount in cents (e.g., $10)
-          name="Donate"
-          description={`Donate for ${project.title}`}
-        />
+        {/* Custom Donation Form */}
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="donationAmount">Enter Donation Amount:</label>
+          <div className="dollar-input">
+            <span>$</span>
+            <input
+              type="number"
+              id="donationAmount"
+              name="donationAmount"
+              value={donationAmount}
+              onChange={handleDonationChange}
+            />
+          </div>
+          {donationAmount > 0 && (
+            <CardElement />
+          )}
+          {donationAmount > 0 && (
+            <button type="submit">Donate</button>
+          )}
+        </form>
       </div>
     </div>
   );
 };
 
 export default ProjectDetails;
+

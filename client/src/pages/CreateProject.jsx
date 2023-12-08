@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import {ADD_PROJECT} from '../utils/mutations';
+import {CREATE_PROJECT} from '../utils/mutations';
 import {Cloudinary} from "@cloudinary/url-gen";
 
 const CreateProject = () => {
@@ -8,10 +8,16 @@ const CreateProject = () => {
     title: '',
     description: '',
     category: '',
-    imageUpload: null,
+    creator: '',
+    fundingGoal: '',
+    currentFunding: '',
+    backers: '',
+    interestedIn: '',
+    projectType: '',
+    imageName: null,
   });
 
-  const [createProject, { loading, error }] = useMutation(ADD_PROJECT, {
+  const [createProject, { loading, error }] = useMutation(CREATE_PROJECT, {
     onCompleted: (data) => {
       console.log('Project created successfully:', data);
     },
@@ -38,13 +44,20 @@ const CreateProject = () => {
     // Put cloudinary code here
 
     try {
-      const { title, description, category, imageUpload } = projectData;
+      const { title, description, category, imageName, creator, fundingGoal, currentFunding, backers, interestedIn, projectType } = projectData;
       await createProject({
         variables: {
           title,
           description,
           category,
-          imageUpload,
+          imageName,
+          creator,
+          amountGiven,
+          fundingGoal,
+          currentFunding,
+          backers,
+          interestedIn,
+          projectType,
         },
       });
     } catch (error) {
