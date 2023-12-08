@@ -47,8 +47,9 @@ const typeDefs = gql`
         session: ID
     }
 
-    type auth {
-        token: String!
+    type Auth {
+        token: ID
+        user: User
     }
 
     type Queries {
@@ -62,14 +63,10 @@ const typeDefs = gql`
 
     type Mutation {
         createProject(input: ProjectInput!): Project
-        updateProject(id: ID!, input: ProjectInput!): Project
-        deleteProject(id: ID!): Project
         createUser(input: UserInput!): User
-        updateUser(id: ID!, input: UserInput!): User
-        deleteUser(id: ID!): User
         addTointerestedIn(projectId: ID!, userId: ID!): Project
-        removeFrominterestedIn(projectId: ID!, userId: ID!): Project
-        addBackerToProject(projectId: ID!, userId: ID!): Project
+        addBackerToProject(projectId: ID!, userId: ID!, currentFunding: Int): Project
+        login(email: String!, password: String!): Auth
       }
 `
 
