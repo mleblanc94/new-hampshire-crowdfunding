@@ -1,16 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const QUERY_USER = gql`
-  query user($username: String!) {
-    user(username: $username) {
-      _id
-      username
-      email
-    }
-  }
-`;
-
-export const QUERY_PROJECTS = gql`
+export const QET_ALL_PROJECTS = gql`
   query getProjects {
     projects {
       _id
@@ -21,11 +11,31 @@ export const QUERY_PROJECTS = gql`
   }
 `;
 
-export const QUERY_PROFILE = gql`
-  query user($username: String!) {
-    user(username: $username) {
-        projects
-        favorited
+export const GET_USER_CREATED = gql`
+query {
+    getcreatedProjects(userId: "yourUserId") {
+      _id
+      created
     }
   }
 `;
+
+export const GET_USER_INTERESTED = gql`
+query {
+    getinterestedIn(userId: "yourUserId") {
+      _id
+      created
+      interested
+    }
+  }
+`;
+
+export const GET_USER_DONATED = gql`
+query {
+    getbackedProjects(userId: "yourUserId") {
+      _id
+      created
+      interested
+    }
+  }
+`

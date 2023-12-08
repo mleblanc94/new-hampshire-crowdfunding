@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-// import { getUserProjects } from '../api'; // Fetch method for user's projects, replace with actual API call
+import { useQuery } from '@apollo/client';
+import { GET_USER_CREATED } from '../utils/queries';
+import { GET_USER_INTERESTED } from '../utils/queries';
+import { GET_USER_DONATED } from '../utils/queries';
 
 const Profile = () => {
   const [username, setUsername] = useState('');
@@ -7,33 +10,37 @@ const Profile = () => {
   const [interestProjects, setInterestProjects] = useState([]);
   const [donatedProjects, setDonatedProjects] = useState([]);
 
+  const { loading, error, data1 } = useQuery(GET_USER_CREATED);
+  const { data2 } = useQuery(GET_USER_INTERESTED);
+  const { data3 } = useQuery(GET_USER_DONATED);
+
   useEffect(() => {
-    // Simulating user data and fetching projects
-    const userData = { username: 'User123' }; // Replace with actual user data from the database
-    setUsername(userData.username);
+    if (data1, data2, data3) {
+      // Extract projects from the GraphQL response and update state
+      const { userCreated } = data1;
+      const { userInterested } = data2;
+      const { userDonated } = data3;
 
-    // Simulating fetching user's projects
-    const fetchData = async () => {
-      try {
-        // Replace with actual API calls or database queries to fetch user's projects
-        const userProjects = await getUserProjects();
+      const created = userCreated;
+      const interested = userInterested;
+      const donated = userDonated;
 
-        // Split the user's projects into respective categories
-        const created = userProjects.filter(project => project.category === 'created');
-        const interested = userProjects.filter(project => project.category === 'interested');
-        const donated = userProjects.filter(project => project.category === 'donated');
+      setCreatedProjects(created);
+      setInterestProjects(interested);
+      setDonatedProjects(donated);
+    }
+  }, [data1, data2, data3]);
 
-        setCreatedProjects(created);
-        setInterestProjects(interested);
-        setDonatedProjects(donated);
-      } catch (error) {
-        // Handle error
-        console.error('Error fetching user projects:', error);
-      }
-    };
+  useEffect(() => {
+    if (!data) {
+      // Simulating user data (replace with actual user data from the GraphQL response)
+      const userData = { username: 'User123' };
+      setUsername(userData.username);
+    }
+  }, [data]);
 
-    fetchData();
-  }, []);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching user projects: {error.message}</p>;
 
   return (
     <div className="pa4">
@@ -88,3 +95,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
