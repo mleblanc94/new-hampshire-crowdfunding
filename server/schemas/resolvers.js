@@ -12,19 +12,21 @@ const signToken = ({ username, email, _id }) => {
 
 const resolvers = {
   Query: {
-    getProjectById: async (_, { id }) => {
-      return await Project.findById(id);
-    },
     getAllProjects: async () => {
       return await Project.find();
     },
-    getUserById: async (_, { id }) => {
-      return await User.findById(id);
+    getinterestedIn: async (_, { interestedIn }) => {
+      const projects = await Project.find({ interestedIn: interestedIn });
+      return projects;
     },
-    getAllUsers: async () => {
-      return await User.find();
+    getbackedProjects: async (_, { backers }) => {
+      const projects = await Project.find({ backers: backers });
+      return projects;
     },
-  
+    getcreatedProjects: async (_, { creator }) => {
+      const projects = await Project.find({ creator: creator });
+      return projects;
+    },
   },
   Mutation: {
     createProject: async (_, { input }) => {
@@ -101,9 +103,6 @@ const resolvers = {
   
   },
   Project: {
-    creator: async (parent) => {
-      return await User.findById(parent.creator);
-    },
     backers: async (parent) => {
       return await User.find({ _id: { $in: parent.backers } });
     },
