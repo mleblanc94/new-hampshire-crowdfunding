@@ -1,4 +1,5 @@
 const { User, Project } = require('./models');
+const bcrypt = require('bcrypt');
 
 const resolvers = {
   Query: {
@@ -52,6 +53,19 @@ const resolvers = {
     removeBackerFromProject: async (_, { projectId, userId }) => {
       const project = await Project.findByIdAndUpdate(projectId, { $pull: { backers: userId } }, { new: true });
       return project;
+    },
+    loginUser: async (_, { email, password }) => {
+      const user = await User.findOne({ email });
+      if (!user) {
+        throw new Error('User not found');
+      }
+      const isValidPassword = await bcrypt.compare(password, user.password);
+
+      if (!isValidPassword) {
+        throw new Error('Invalid password');
+      }
+      
+      return user;
     },
   
   },
