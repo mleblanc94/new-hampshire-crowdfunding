@@ -26,10 +26,7 @@ const typeDefs = gql`
         currentFunding: Int
         backers: [User]
         interestedIn: [User]
-        status: String
         projectType: String!
-        createdAt: String
-        updatedAt: String
         imageName: String!
     }
 
@@ -48,6 +45,10 @@ const typeDefs = gql`
 
     type Checkout {
         session: ID
+    }
+
+    type auth {
+        token: String!
     }
 
     type Queries {
