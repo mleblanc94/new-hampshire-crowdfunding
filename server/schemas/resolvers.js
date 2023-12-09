@@ -1,4 +1,4 @@
-const { User, Project } = require('./models');
+const { User, Project } = require('../models');
 const { AuthenticationError } = require('../utils/auth')
 const jwt = require('jsonwebtoken');
 
@@ -15,54 +15,50 @@ const resolvers = {
     getAllProjects: async () => {
       return await Project.find();
     },
+    getcreatedProjects: async (_, { creator }) => {
+      const projects = await Project.find({ creator });
+      return projects;
+    },
     getinterestedIn: async (_, { interestedIn }) => {
-      const projects = await Project.find({ interestedIn: interestedIn });
+      const projects = await Project.find({ interestedIn });
       return projects;
     },
     getbackedProjects: async (_, { backers }) => {
-      const projects = await Project.find({ backers: backers });
-      return projects;
-    },
-    getcreatedProjects: async (_, { creator }) => {
-      const projects = await Project.find({ creator: creator });
+      const projects = await Project.find({ backers });
       return projects;
     },
   },
   Mutation: {
-    createProject: async (_, { input }) => {
-      const newProject = await Project.create(input);
+    createProject: async (_, args) => {
+      const newProject = await Project.create(args.input);
       return newProject;
     },
-    updateProject: async (_, { id, input }) => {
-      return await Project.findByIdAndUpdate(id, input, { new: true });
-    },
-    deleteProject: async (_, { id }) => {
-      return await Project.findByIdAndDelete(id);
-    },
-    createUser: async (_, { input }) => {
-      const newUser = await User.create(input);
+    createUser: async (_, args) => {
+    if (args.input) {
+      const newUser = await User.create(args.input);
       return newUser;
-    },
-    updateUser: async (_, { id, input }) => {
-      return await User.findByIdAndUpdate(id, input, { new: true });
-    },
-    deleteUser: async (_, { id }) => {
-      return await User.findByIdAndDelete(id);
-    },
+    } else {
+      const { username, email, password } = args;
+      const user = await User.create({ username, email, password });
+      if (!user) {
+        throw new AuthenticationError;
+      }
+
+      const token = signToken({ 
+        username: user.username,
+        email: user.email,
+        _id: user._id,
+      });
+
+      return { token, user };
+    }
+  },
     addTointerestedIn: async (_, { projectId, userId }) => {
       const project = await Project.findByIdAndUpdate(projectId, { $push: { interestedIn: userId } }, { new: true });
       return project;
     },
-    removeFrominterestedIn: async (_, { projectId, userId }) => {
-      const project = await Project.findByIdAndUpdate(projectId, { $pull: { interestedIn: userId } }, { new: true });
-      return project;
-    },
     addBackerToProject: async (_, { projectId, userId }) => {
       const project = await Project.findByIdAndUpdate(projectId, { $push: { backers: userId } }, { new: true });
-      return project;
-    },
-    removeBackerFromProject: async (_, { projectId, userId }) => {
-      const project = await Project.findByIdAndUpdate(projectId, { $pull: { backers: userId } }, { new: true });
       return project;
     },
     loginUser: async (_, { email, password }) => {
@@ -85,22 +81,6 @@ const resolvers = {
        
       return { token, user};
     },
-
-    addUser: async (_, { username, email, password }) => {
-      const user = await User.create({ username, email, password });
-      if (!user) {
-        throw new AuthenticationError;
-      }
-
-      const token = signToken({ 
-        username: user.username,
-        email: user.email,
-        _id: user._id,
-      });
-
-      return { token, user };
-    },
-  
   },
   Project: {
     backers: async (parent) => {

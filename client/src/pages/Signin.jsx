@@ -52,14 +52,14 @@ const Signin = (props) => {
               <fieldset id="login" className="ba b--transparent ph0 mh0">
                 <legend className="f4 fw6 ph0 mh0">Login</legend>
                 <div className="mt3">
-                  <label className="db fw6 lh-copy f6" htmlFor="login">
-                    Login:
+                  <label className="db fw6 lh-copy f6" htmlFor="email">
+                    Email:
                   </label>
                   <input
                     className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                     type="text"
-                    id="login"
-                    name="login"
+                    id="email"
+                    name="email"
                     value={formState.email}
                     onChange={handleChange}
                   />
@@ -95,3 +95,4 @@ const Signin = (props) => {
 };
 
 export default Signin;
+
