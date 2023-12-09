@@ -1,46 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_USER_CREATED } from '../utils/queries';
-import { GET_USER_INTERESTED } from '../utils/queries';
-import { GET_USER_DONATED } from '../utils/queries';
+import { GET_USER_CREATED, GET_USER_INTERESTED, GET_USER_DONATED } from '../utils/queries';
+import jwt_decode from 'jwt-decode';
 
 const Profile = () => {
+  const token = localStorage.getItem('token');
+
+  let userId = null;
+  if (token) {
+    const decoded = jwt_decode(token);
+    userId = decoded ? decoded.userId : null; // Extract userId from the decoded token
+    console.log('User ID:', userId);
+  }
+
   const [username, setUsername] = useState('');
   const [createdProjects, setCreatedProjects] = useState([]);
   const [interestProjects, setInterestProjects] = useState([]);
   const [donatedProjects, setDonatedProjects] = useState([]);
 
-  const { loading, error, data1 } = useQuery(GET_USER_CREATED);
-  const { data2 } = useQuery(GET_USER_INTERESTED);
-  const { data3 } = useQuery(GET_USER_DONATED);
+  const { loading: loadingCreated, data: data1 } = useQuery(GET_USER_CREATED, {
+    variables: { userId },
+  });
+
+  const { loading: loadingInterested, data: data2 } = useQuery(GET_USER_INTERESTED, {
+    variables: { userId },
+  });
+
+  const { loading: loadingDonated, data: data3 } = useQuery(GET_USER_DONATED, {
+    variables: { userId },
+  });
 
   useEffect(() => {
-    if (data1, data2, data3) {
-      // Extract projects from the GraphQL response and update state
-      const { userCreated } = data1;
-      const { userInterested } = data2;
-      const { userDonated } = data3;
+    if (data1 && data2 && data3) {
+      const { getcreatedProjects } = data1;
+      const { getinterestedIn } = data2;
+      const { getbackedProjects } = data3;
 
-      const created = userCreated;
-      const interested = userInterested;
-      const donated = userDonated;
-
-      setCreatedProjects(created);
-      setInterestProjects(interested);
-      setDonatedProjects(donated);
+      setCreatedProjects(getcreatedProjects);
+      setInterestProjects(getinterestedIn);
+      setDonatedProjects(getbackedProjects);
     }
   }, [data1, data2, data3]);
 
-  useEffect(() => {
-    if (!data) {
-      // Simulating user data (replace with actual user data from the GraphQL response)
-      const userData = { username: 'User123' };
-      setUsername(userData.username);
-    }
-  }, [data]);
+  // Check loading state of all queries
+  const loading = loadingCreated || loadingInterested || loadingDonated;
+
+  if (loading) {
+    return <p>Loading...</p>; // Show loading indicator
+  }
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error fetching user projects: {error.message}</p>;
+  // if (error) return <p>Error fetching user projects: {error.message}</p>;
 
   return (
     <div className="pa4">

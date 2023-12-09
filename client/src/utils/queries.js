@@ -12,30 +12,31 @@ export const QET_ALL_PROJECTS = gql`
 `;
 
 export const GET_USER_CREATED = gql`
-query {
-    getcreatedProjects(userId: "yourUserId") {
+  query GetUserCreated($userId: ID!) {
+    getcreatedProjects(creator: $userId) {
       _id
-      created
+      title
+      description
     }
   }
 `;
 
 export const GET_USER_INTERESTED = gql`
-query {
-    getinterestedIn(userId: "yourUserId") {
+  query GetUserInterested($userId: ID!) {
+    getinterestedIn(interestedIn: $userId) {
       _id
-      created
-      interested
+      title
+      description
     }
   }
 `;
 
 export const GET_USER_DONATED = gql`
-query {
-    getbackedProjects(userId: "yourUserId") {
+  query GetUserDonated($userId: ID!) {
+    getbackedProjects(backers: $userId) {
       _id
-      created
-      interested
+      title
+      description
     }
   }
-`
+`;
