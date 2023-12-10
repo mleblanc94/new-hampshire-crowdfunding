@@ -42,12 +42,8 @@ const typeDefs = gql`
     password: String!
   }
 
-  type Checkout {
-    session: ID
-  }
-
   type Auth {
-    token: ID
+    token: ID!
     user: User
   }
 
@@ -63,7 +59,7 @@ const typeDefs = gql`
     createUser(username: String!, email: String!, password: String!): Auth
     addTointerestedIn(projectId: ID!, userId: ID!): Project
     addBackerToProject(projectId: ID!, userId: ID!, currentFunding: Int): Project
-    loginUser(email: String!, password: String!): Auth
+    login(email: String!, password: String!): Auth
   }
 `;
 

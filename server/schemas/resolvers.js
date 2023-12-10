@@ -29,7 +29,7 @@ const resolvers = {
     },
   },
   Mutation: {
-    createProject: async (_, args) => {
+    createProject: async (_, { input }) => {
       const newProject = await Project.create(args.input);
       return newProject;
     },
@@ -61,25 +61,17 @@ const resolvers = {
       const project = await Project.findByIdAndUpdate(projectId, { $push: { backers: userId } }, { new: true });
       return project;
     },
-    loginUser: async (_, { email, password }) => {
+    login: async (_, { email, password }) => {
+      // Find user by email
       const user = await User.findOne({ email });
-      if (!user) {
-        throw new AuthenticationError;
-      }
+      if (!user) throw new AuthenticationError("Incorrect login credentials!");
+      // Check if password is correct
+      const correctPw = await user.isCorrectPassword(password);
+      if (!correctPw) throw new AuthenticationError("Incorrect login credentials!");
+      
+      const token = signToken(user);// Issue token
 
-      const isValidPassword = await user.isCorrectPassword;
-
-      if (!isValidPassword) {
-        throw AuthenticationError
-      }
-
-      const token = signToken({ 
-        username: user.username,
-        email: user.email,
-        _id: user_id
-      })
-       
-      return { token, user};
+      return { token, user };// Return token and user   
     },
   },
   Project: {
