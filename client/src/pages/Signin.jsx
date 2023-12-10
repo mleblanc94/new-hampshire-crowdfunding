@@ -8,12 +8,12 @@ import Auth from '../utils/auth';
 
 const Signin = (props) => {
   const [formState, setFormState] = useState({ email: '', password: '' });
+  const [errorAlert, setError] = useState(null);
   const [login, { error, data }] = useMutation(LOGIN_USER);
 
   // update state based on form input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
-
     setFormState({
       ...formState,
       [name]: value,
@@ -22,16 +22,16 @@ const Signin = (props) => {
 
   // submit form
   const handleFormSubmit = async (event) => {
-    event.preventDefault();
-    console.log(formState);
+    event.preventDefault();    
     try {
       const { data } = await login({
         variables: { ...formState },
       });
 
-      Auth.login(data.login.token);
+      Auth.login(data.login.token);      
     } catch (e) {
-      console.error(e);
+      setError('Invalid Login Credentials! Please try again.');
+      console.error(e);     
     }
 
     // clear form values
@@ -48,7 +48,7 @@ const Signin = (props) => {
         <article className="br2 ba dark-gray b--black-10 mv4 w-40-l mw6 mh4 center shadow-5 bg-washed-green">
           <main className="pa4 black-80">
             {/* Login Card */}
-            <form className="measure" onSubmit={handleFormSubmit}>
+            <form className="measure" onSubmit={handleFormSubmit}>              
               <fieldset id="login" className="ba b--transparent ph0 mh0">
                 <legend className="f4 fw6 ph0 mh0">Login</legend>
                 <div className="mt3">
@@ -85,7 +85,7 @@ const Signin = (props) => {
                   />
                 </div>
               </fieldset>
-              {error && <p>Error: {error.message}</p>}
+              {error && <p>Error: { errorAlert && error.message }</p>}
             </form>
           </main>
         </article>

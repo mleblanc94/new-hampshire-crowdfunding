@@ -24,40 +24,46 @@ const Navigation = () => {
             Home
           </Link>
         </li>
-        <li>
-          <Link to="/create" className={`near-white ${isCurrentPage('/create') ? 'fw8' : ''}`}>
-            Create
-          </Link>
-        </li>
-        <li>
-          <Link to="/profile" className={`near-white ${isCurrentPage('/profile') ? 'fw8' : ''}`}>
-            Profile
-          </Link>
-        </li>
-        <li>
-          <div>
-            {Auth.loggedIn() ? (
-              <>
-                <button className="btn btn-lg btn-light m-2" onClick={logout}>
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-              <Link to="/signin">
-                <button className="btn btn-lg btn-info m-5 signin-button" to="/signin">
-                  Login
-                </button>
+        {
+          Auth.loggedIn() ? (
+            <>
+              <li>
+                <Link to="/create" className={`near-white ${isCurrentPage('/create') ? 'fw8' : ''}`}>
+                  Create
                 </Link>
-                <Link to="/signup">
-                <button className="btn btn-lg btn-light m-2 signup-button" to="/signup">
-                  Signup
-                </button>
+              </li>
+              <li>
+                <Link to="/profile" className={`near-white ${isCurrentPage('/profile') ? 'fw8' : ''}`}>
+                  Profile
                 </Link>
-              </>
-            )}
-          </div>
-        </li>
+              </li>
+              <li>
+                <div>
+                  <button className="btn btn-lg btn-light m-2" onClick={logout}>
+                    Logout
+                  </button>
+                </div>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <div>
+                  <Link to="/signin">
+                    <button className="btn btn-lg btn-info m-5 signin-button" to="/signin">
+                      Login
+                    </button>
+                  </Link>
+                  <Link to="/signup">
+                    <button className="btn btn-lg btn-light m-2 signup-button" to="/signup">
+                      Signup
+                    </button>
+                  </Link>
+                </div>
+              </li>
+            </>
+          )}
+
       </ul>
     </nav>
   );
