@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { CREATE_PROJECT } from '../utils/mutations';
-import  AuthService  from '../utils/auth';
+import AuthService from '../utils/auth';
 
 const CreateProject = () => {
   const [projectData, setProjectData] = useState({
@@ -16,12 +16,14 @@ const CreateProject = () => {
   const authService = AuthService; // Initialize AuthService
 
   const [createProject, { loading, error }] = useMutation(CREATE_PROJECT, {
-    onCompleted: (data) => {
-      console.log('Project created successfully:', data);
-    },
     onError: (error) => {
       console.error('Error creating project:', error);
     },
+    context: {
+      headers: {
+        Authorization: `Bearer ${authService.getToken()}` // Include the token in the header
+      }
+    }
   });
 
   const handleInputChange = (event) => {
@@ -36,30 +38,27 @@ const CreateProject = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Fetch the username from the token and assign it to the creator field
+  
     const token = authService.getToken();
-    const username = authService.getProfile()?.username; // Assumes getProfile returns an object with username
-
-    if (username) {
-      setProjectData({ ...projectData, creator: username }); // Set the username as the creator
+    if (!token) {
+      console.error('Token is invalid or null');
+      return;
     }
-
-    try {
-      const { title, description, category, imageName, creator, fundingGoal } = projectData;
-      await createProject({
-        variables: {
-          title,
-          description,
-          category,
-          imageName,
-          creator,
-          fundingGoal,
-        },
-      });
-    } catch (error) {
-      console.error('Error:', error);
-    }
+  
+    const username = authService.getProfile().data.username;
+  
+    const { title, description, category, imageName, fundingGoal } = projectData;
+  
+    await createProject({
+      variables: {
+        title,
+        description,
+        category,
+        imageName,
+        creator: username, // Use username directly
+        fundingGoal,
+      },
+    });
   };
 
   return (

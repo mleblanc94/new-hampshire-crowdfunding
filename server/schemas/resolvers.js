@@ -30,7 +30,7 @@ const resolvers = {
   },
   Mutation: {
     createProject: async (_, { input }) => {
-      const newProject = await Project.create(args.input);
+      const newProject = await Project.create(input);
       return newProject;
     },
     createUser: async (_, args) => {
