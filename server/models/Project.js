@@ -14,35 +14,26 @@ const projectSchema = new Schema({
         type: String,
         required: true
     },
-    creator: {//this is the foreign key
+    creator: {
         type: Schema.Types.ObjectId, ref: 'User', required: true
     },
     fundingGoal: {
         type: Number,
         required: true
     },
-    currentFunding: {
-        type: Number,
-        default: 0
+    backers: {
+        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+        default: []
     },
-    backers: [{//this is array of foreign key for the backers/funders
-        type: Schema.Types.ObjectId, ref: 'User'
-    }],
-    interestedIn: [{//this is array of foreign key for the interested users in the projects
-        type: Schema.Types.ObjectId, ref: 'User'
-    }],
-    status: {//this is the status of the project
+    interestedIn: {
+        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+        default: []
+    },
+    status: {
         type: String,
         enum: ['active', 'closed'], default: 'active'
     },
-    projectType: {//this is the foreign key
-        type: Schema.Types.ObjectId, ref: 'ProjectType', required: true
-    },
-    createdAt: {//creates timestamp when created
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {//creates timestamp when updated
+    createdAt: {
         type: Date,
         default: Date.now
     },

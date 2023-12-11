@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import {CREATE_PROJECT} from '../utils/mutations';
-import {Cloudinary} from "@cloudinary/url-gen";
+import { CREATE_PROJECT } from '../utils/mutations';
+import  AuthService  from '../utils/auth';
 
 const CreateProject = () => {
   const [projectData, setProjectData] = useState({
@@ -10,12 +10,10 @@ const CreateProject = () => {
     category: '',
     creator: '',
     fundingGoal: '',
-    currentFunding: '',
-    backers: '',
-    interestedIn: '',
-    projectType: '',
     imageName: null,
   });
+
+  const authService = AuthService; // Initialize AuthService
 
   const [createProject, { loading, error }] = useMutation(CREATE_PROJECT, {
     onCompleted: (data) => {
@@ -37,14 +35,18 @@ const CreateProject = () => {
   };
 
   const handleSubmit = async (event) => {
-
-
     event.preventDefault();
 
-    // Put cloudinary code here
+    // Fetch the username from the token and assign it to the creator field
+    const token = authService.getToken();
+    const username = authService.getProfile()?.username; // Assumes getProfile returns an object with username
+
+    if (username) {
+      setProjectData({ ...projectData, creator: username }); // Set the username as the creator
+    }
 
     try {
-      const { title, description, category, imageName, creator, fundingGoal, currentFunding, backers, interestedIn, projectType } = projectData;
+      const { title, description, category, imageName, creator, fundingGoal } = projectData;
       await createProject({
         variables: {
           title,
@@ -52,12 +54,7 @@ const CreateProject = () => {
           category,
           imageName,
           creator,
-          amountGiven,
           fundingGoal,
-          currentFunding,
-          backers,
-          interestedIn,
-          projectType,
         },
       });
     } catch (error) {
@@ -128,6 +125,19 @@ const CreateProject = () => {
                   <option value="Risky Ventures">Risky Ventures</option>
                 </select>
               </div>
+              <div className="mv3">
+              <label className="db fw6 lh-copy f6" htmlFor="fundingGoal">
+                Funding Goal:
+              </label>
+              <input
+                className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                type="text"
+                placeholder="$"
+                id="fundingGoal"
+                name="fundingGoal"
+                onChange={handleInputChange}
+              />
+            </div>
               <div className="tc">
                 <input
                   className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
@@ -145,8 +155,3 @@ const CreateProject = () => {
 };
 
 export default CreateProject;
-
-
-
-
-
