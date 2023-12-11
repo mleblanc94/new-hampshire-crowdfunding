@@ -19,6 +19,11 @@ const CreateProject = () => {
     onError: (error) => {
       console.error('Error creating project:', error);
     },
+    context: {
+      headers: {
+        Authorization: `Bearer ${authService.getToken()}` // Include the token in the header
+      }
+    }
   });
 
   const handleInputChange = (event) => {
@@ -33,32 +38,27 @@ const CreateProject = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    try {
-      const token = authService.getToken();
-      if (!token) {
-        console.error('Token is invalid or null');
-        return;
-      }
-
-      const username = authService.getProfile().data.username;
-      setProjectData({ ...projectData, creator: username });
-
-      const { title, description, category, imageName, creator, fundingGoal } = projectData;
-
-      await createProject({
-        variables: {
-          title,
-          description,
-          category,
-          imageName,
-          creator,
-          fundingGoal,
-        },
-      });
-    } catch (error) {
-      console.error('Error:', error);
+  
+    const token = authService.getToken();
+    if (!token) {
+      console.error('Token is invalid or null');
+      return;
     }
+  
+    const username = authService.getProfile().data.username;
+  
+    const { title, description, category, imageName, fundingGoal } = projectData;
+  
+    await createProject({
+      variables: {
+        title,
+        description,
+        category,
+        imageName,
+        creator: username, // Use username directly
+        fundingGoal,
+      },
+    });
   };
 
   return (
