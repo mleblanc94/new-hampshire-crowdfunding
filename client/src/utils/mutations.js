@@ -27,13 +27,17 @@ export const CREATE_USER = gql`
 `;
 
 export const CREATE_PROJECT = gql`
-  mutation createProject($title: String!, $description: String!, $category: String!, $creator: String!, $imageName: String!, $fundingGoal: Float!  ) {
-    createProject(title: $title, description: $description, category: $category, creator: $creator, imageName: $imageName, fundingGoal: $fundingGoal ) {
-      token
-      user {
-        _id
-        username
-      }
+mutation CreateProject($input: ProjectInput!) {
+  createProject(input: $input) {
+    _id
+    title
+    description
+    creator {
+      _id
+    }
+    fundingGoal
+    projectType
+    imageName
     }
   }
 `;
