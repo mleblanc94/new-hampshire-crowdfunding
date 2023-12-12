@@ -1,0 +1,22 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Apply flexbox to the entire app content */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure it takes the full viewport height */
+}
+
+/* The main content area will flex and grow, pushing the footer to the bottom */
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+/* Footer styles */
+.footer {
+  background-color: #e0ffe0; /* Change this to your preferred background color */
+  padding: 20px; /* Adjust padding as needed */
+}
