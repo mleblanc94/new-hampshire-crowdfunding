@@ -1,12 +1,12 @@
 import { gql } from '@apollo/client';
 
-export const QET_ALL_PROJECTS = gql`
-  query getProjects {
-    projects {
+export const GET_ALL_PROJECTS = gql`
+  query getAllProjects {
+    getAllProjects {
       _id
       title
       description
-      category
+      projectType
     }
   }
 `;
@@ -17,6 +17,8 @@ export const GET_USER_CREATED = gql`
       _id
       title
       description
+      fundingGoal
+      currentFunding
     }
   }
 `;
@@ -37,6 +39,14 @@ export const GET_USER_DONATED = gql`
       _id
       title
       description
+    }
+  }
+  `;
+  export const GET_ALL_PROJECT_TYPES = gql`
+  query {
+    getAllProjectTypes {
+      _id
+      name
     }
   }
 `;

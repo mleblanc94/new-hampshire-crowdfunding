@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import Auth from '../utils/auth';
 import 'tachyons';
 import './Navigation.css';
+import  Logo  from '../assets/Logo3.png';
 
 const Navigation = () => {
   const location = useLocation();
@@ -18,7 +19,14 @@ const Navigation = () => {
 
   return (
     <nav>
-      <ul className="flex justify-between list ma0 sans-serif f3 lh-copy bg-navy pv3 links-ul">
+      
+    
+      <ul className="flex justify-between list ma0 sans-serif f3 lh-copy bg-blue pv3 links-ul">
+      <li>
+
+<img src={Logo} alt="logo"
+         className="shadow-lg p-1 mb-1 bg-white rounded" />
+</li>        
         <li>
           <Link to="/" className={`near-white ${isCurrentPage('/') ? 'fw8' : ''}`}>
             Home

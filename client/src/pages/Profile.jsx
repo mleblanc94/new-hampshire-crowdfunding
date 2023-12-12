@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_USER_CREATED, GET_USER_INTERESTED, GET_USER_DONATED } from '../utils/queries';
 import jwt_decode from 'jwt-decode';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import  AuthService  from '../utils/auth';
 
 const Profile = () => {
-  const token = localStorage.getItem('token');
 
-  let userId = null;
-  if (token) {
-    const decoded = jwt_decode(token);
-    userId = decoded ? decoded.userId : null; // Extract userId from the decoded token
-    console.log('User ID:', userId);
-  }
+  const userId = AuthService.loggedIn() ? AuthService.getProfile().data._id : null;
 
   const [username, setUsername] = useState('');
   const [createdProjects, setCreatedProjects] = useState([]);
@@ -65,7 +62,14 @@ const Profile = () => {
         {createdProjects.length > 0 ? (
           <ul>
             {createdProjects.map((project, index) => (
-              <li key={index}>{project.title}</li>
+              <li key={index}>{project.title}
+              <br></br>
+              {project.description}
+              <br></br>
+              <b>Funding Goal :</b>{project.fundingGoal}
+              <br></br>
+              <b>Current Funding :</b> {project.currentFunding}
+              </li>
             ))}
           </ul>
         ) : (

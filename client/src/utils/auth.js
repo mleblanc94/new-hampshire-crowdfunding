@@ -22,18 +22,18 @@ class AuthService {
     }
   }
 
-  getToken() {
+  getToken() {    
     return localStorage.getItem('id_token');
   }
 
-  login(idToken) {
+  login(idToken) {    
     localStorage.setItem('id_token', idToken);
     window.location.assign('/');
   }
 
   logout() {
     localStorage.removeItem('id_token');
-    window.location.reload();
+    window.location.replace('/signin');
   }
 }
 
