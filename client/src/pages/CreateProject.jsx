@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-//import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useQuery } from '@apollo/client';
 import { CREATE_PROJECT } from '../utils/mutations';
 import { GET_ALL_PROJECT_TYPES } from '../utils/queries';
 import AuthService from '../utils/auth';
-//import { GET_ALL_PROJECT_TYPES } from '../path-to-your-graphql-query-file';
-
 
 const CreateProject = () => {
-  //const history = useHistory();
+  
   const [projectData, setProjectData] = useState({
     title: '',
     description: '',
@@ -19,10 +16,17 @@ const CreateProject = () => {
     imageName: 'default.png', // Default image name
   });
 
-  const [createProject, { loading, error }] = useMutation(CREATE_PROJECT);
+ 
   const { loadingPT, errorPT, data } = useQuery(GET_ALL_PROJECT_TYPES);
-  console.log(data);
-  // const projectTypes = data.getAllProjectTypes;
+  if (loadingPT) return <p>Loading...</p>;
+  if (errorPT) return <p>Error: {errorPT.message}</p>; 
+ 
+  const projectTypes = data ? data.getAllProjectTypes : [];
+ console.log(projectTypes);
+ 
+  const [createProject, { loading, error }] = useMutation(CREATE_PROJECT);
+
+  
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -40,7 +44,7 @@ const CreateProject = () => {
           input: {
             ...projectData,
             creator: AuthService.getProfile().data._id,
-            fundingGoal: parseInt(projectData.fundingGoal, 10), // Convert to integer
+            fundingGoal: parseInt(projectData.fundingGoal, 10), // Convert to integer            
           },
         },
       });
@@ -63,7 +67,7 @@ const CreateProject = () => {
   };
 
   const images = ['image1.jpg', 'image2.jpg', 'image3.svg', 'image4.png', 'image5.jpg', 'image6.jpg'];
-
+ 
   return (
     <div className="pa4" style={{ maxWidth: '600px', margin: '0 auto' }}>
       <article className="br2 ba dark-gray b--black-10 mv4 shadow-5">
@@ -113,22 +117,8 @@ const CreateProject = () => {
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="projectType">
                   Project Type:
-                </label>
+                </label>           
                 <select
-                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                  id="projectType"
-                  name="projectType"
-                  onChange={handleInputChange}
-                >
-                  <option value="656e86c228026e4c9938d983">Technology</option>
-                  <option value="Art">Art</option>
-                  <option value="Health">Health</option>
-                  <option value="Startup">Startup</option>
-                  <option value="Social Causes">Social Causes</option>
-                  <option value="Personal Projects">Personal Projects</option>
-                  <option value="Risky Ventures">Risky Ventures</option>
-                </select>
-                {/* <select
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   id="projectType"
                   name="projectType"
@@ -139,7 +129,7 @@ const CreateProject = () => {
                       {projectType.name}
                     </option>
                   ))}
-                </select> */}
+                </select>
               </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="fundingGoal">
@@ -170,8 +160,3 @@ const CreateProject = () => {
 };
 
 export default CreateProject;
-
-
-
-
-
