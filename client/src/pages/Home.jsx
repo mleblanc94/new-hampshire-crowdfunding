@@ -24,13 +24,29 @@ const Home = () => {
 
   const addToFavorites = (project) => {
     setFavorites([...favorites, project]);
-  };  
+  };
 
   // Stripe public key (replace with your actual Stripe public key)
   const stripePromise = loadStripe('your_stripe_public_key');
 
   return (
     <div className="pa4">
+      <div>
+        <h1>Welcome to New Hampshire Crowd Funding!</h1>
+        <p>
+          Embark on a journey where ideas come to life and dreams find their wings.
+          At New Hampshire Crowd Funding, we believe in the power of community, passion, and the extraordinary impact that can be made when people come together.
+        </p>
+        <p>
+          Our platform is more than just a crowdfunding space; its a vibrant ecosystem where creators, backers, and visionaries unite to shape the future. Whether 
+          you are an innovator with a groundbreaking project, a supporter seeking the next big thing, or a dreamer looking to be part of something extraordinary 
+          – you have found your home.
+        </p>
+        <p>
+        oin us in the art of turning dreams into reality, where every project has a story, and every backer is a crucial part of that narrative. 
+        From cutting-edge tech to artistic masterpieces, social causes to entrepreneurial ventures - the possibilities are endless.
+        </p>
+      </div>
       <h1 className="tc">Active Projects</h1>
       <div className="flex justify-center">
         <div className="flex flex-wrap justify-between mw8">
@@ -44,13 +60,14 @@ const Home = () => {
               <main className="pa4 black-80">
                 <h2 className="f4 fw6">{project.title}</h2>
                 <img
-                  src={project.imageName}
+                  src={`./${project.imageName}`}
+                  style={{ maxWidth: '250px', maxHeight: '250px' }}
                   alt={project.title}
                   className="w-100 pointer"
                   onClick={(e) => e.stopPropagation()} // Prevent modal open on image click
                 />
                 <p>{project.description}</p>
-                <button onClick={() => addToFavorites(project)}>Add to Favorites</button>
+                <button onClick={() => addToFavorites(project)}>Donate</button>
               </main>
             </article>
           ))}

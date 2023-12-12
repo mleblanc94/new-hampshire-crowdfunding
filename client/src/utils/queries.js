@@ -7,6 +7,7 @@ export const GET_ALL_PROJECTS = gql`
       title
       description
       projectType
+      imageName
     }
   }
 `;

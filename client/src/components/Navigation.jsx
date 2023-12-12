@@ -21,7 +21,7 @@ const Navigation = () => {
     <nav>
       
     
-      <ul className="flex justify-between list ma0 sans-serif f3 lh-copy bg-blue pv3 links-ul">
+      <ul className="flex justify-between list ma0 sans-serif f3 lh-copy pv3 links-ul">
       <li>
 
 <img src={Logo} alt="logo"
