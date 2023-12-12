@@ -1,66 +1,53 @@
 import React, { useState } from 'react';
+//import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import { CREATE_PROJECT } from '../utils/mutations';
-import AuthService from '../utils/auth';
-
+import {CREATE_PROJECT} from '../utils/mutations';
+import  AuthService  from '../utils/auth';
 const CreateProject = () => {
+  //const history = useHistory();
   const [projectData, setProjectData] = useState({
     title: '',
     description: '',
-    category: '',
     creator: '',
-    fundingGoal: '',
+    fundingGoal: 0,
+    projectType: '',
     imageName: null,
   });
-
-  const authService = AuthService; // Initialize AuthService
-
-  const [createProject, { loading, error }] = useMutation(CREATE_PROJECT, {
-    onError: (error) => {
-      console.error('Error creating project:', error);
-    },
-    context: {
-      headers: {
-        Authorization: `Bearer ${authService.getToken()}` // Include the token in the header
-      }
-    }
-  });
-
+  const [createProject, { loading, error }] = useMutation(CREATE_PROJECT);
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setProjectData({ ...projectData, [name]: value });
   };
-
   const handlePictureChange = (event) => {
     const selectedFile = event.target.files[0];
     setProjectData({ ...projectData, imageUpload: selectedFile });
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
-    const token = authService.getToken();
-    if (!token) {
-      console.error('Token is invalid or null');
-      return;
+     try {
+      const { data } = await createProject({
+        variables: {
+          input: {
+            ...projectData,
+            creator: AuthService.getProfile().data._id,
+            imageName: 'default.png',
+            fundingGoal: parseInt(projectData.fundingGoal, 10), // Convert to integer
+          },
+        },
+      });
+      // Handle the response, e.g., show a success message, redirect, etc.
+      console.log('Project created:', data.createProject);
+      // If you have a token from authentication, you can use it here
+      const userToken = AuthService.loggedIn() ? AuthService.getToken() : null;
+      // Use the token as needed, e.g., store it, redirect, etc.
+      console.log('User Token:', userToken);
+      //history.push('/');
+      window.location.assign('/');
+    } catch (error) {
+      // Handle error, e.g., show an error message
+      console.error('Error creating project:', error.message);
     }
-  
-    const username = authService.getProfile().data.username;
-  
-    const { title, description, category, imageName, fundingGoal } = projectData;
-  
-    await createProject({
-      variables: {
-        title,
-        description,
-        category,
-        imageName,
-        creator: username, // Use username directly
-        fundingGoal,
-      },
-    });
   };
-
   return (
     <div className="pa4" style={{ maxWidth: '600px', margin: '0 auto' }}>
       <article className="br2 ba dark-gray b--black-10 mv4 shadow-5">
@@ -106,16 +93,16 @@ const CreateProject = () => {
                 ></textarea>
               </div>
               <div className="mv3">
-                <label className="db fw6 lh-copy f6" htmlFor="category">
-                  Category:
+                <label className="db fw6 lh-copy f6" htmlFor="projectType">
+                  Project Type:
                 </label>
                 <select
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                  id="category"
-                  name="category"
+                  id="projectType"
+                  name="projectType"
                   onChange={handleInputChange}
                 >
-                  <option value="Technology">Technology</option>
+                  <option value="656e86c228026e4c9938d983">Technology</option>
                   <option value="Art">Art</option>
                   <option value="Health">Health</option>
                   <option value="Startup">Startup</option>
@@ -125,18 +112,17 @@ const CreateProject = () => {
                 </select>
               </div>
               <div className="mv3">
-              <label className="db fw6 lh-copy f6" htmlFor="fundingGoal">
-                Funding Goal:
-              </label>
-              <input
-                className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                type="text"
-                placeholder="$"
-                id="fundingGoal"
-                name="fundingGoal"
-                onChange={handleInputChange}
-              />
-            </div>
+                <label className="db fw6 lh-copy f6" htmlFor="fundingGoal">
+                fundingGoal:
+                </label>
+                <input
+                  className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  type="number"
+                  id="fundingGoal"
+                  name="fundingGoal"
+                  onChange={handleInputChange}
+                />
+              </div>
               <div className="tc">
                 <input
                   className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
@@ -152,5 +138,4 @@ const CreateProject = () => {
     </div>
   );
 };
-
 export default CreateProject;
