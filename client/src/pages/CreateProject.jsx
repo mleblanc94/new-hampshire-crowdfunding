@@ -16,21 +16,20 @@ const CreateProject = () => {
     creator: '',
     fundingGoal: 0,
     projectType: '',
-    imageName: null,
+    imageName: 'default.png', // Default image name
   });
 
   const [createProject, { loading, error }] = useMutation(CREATE_PROJECT);
   const { loadingPT, errorPT, data } = useQuery(GET_ALL_PROJECT_TYPES);
   console.log(data);
-  const projectTypes = data.getAllProjectTypes;
+  // const projectTypes = data.getAllProjectTypes;
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setProjectData({ ...projectData, [name]: value });
   };
-  const handlePictureChange = (event) => {
-    const selectedFile = event.target.files[0];
-    setProjectData({ ...projectData, imageUpload: selectedFile });
+  const handleImageSelect = (imageName) => {
+    setProjectData({ ...projectData, imageName });
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -41,7 +40,6 @@ const CreateProject = () => {
           input: {
             ...projectData,
             creator: AuthService.getProfile().data._id,
-            imageName: 'default.png',
             fundingGoal: parseInt(projectData.fundingGoal, 10), // Convert to integer
           },
         },
@@ -63,6 +61,9 @@ const CreateProject = () => {
       console.error('Error creating project:', error.message);
     }
   };
+
+  const images = ['image1.jpg', 'image2.jpg', 'image3.svg', 'image4.png', 'image5.jpg', 'image6.jpg'];
+
   return (
     <div className="pa4" style={{ maxWidth: '600px', margin: '0 auto' }}>
       <article className="br2 ba dark-gray b--black-10 mv4 shadow-5">
@@ -71,18 +72,20 @@ const CreateProject = () => {
             <fieldset id="createProject" className="ba b--transparent ph0 mh0">
               <legend className="f4 fw6 ph0 mh0">Create a Project</legend>
               <div className="mv3">
-                <label className="db fw6 lh-copy f6" htmlFor="imageUpload">
-                  Upload Picture:
-                </label>
-                <input
-                  type="file"
-                  id="imageUpload"
-                  name="imageUpload"
-                  accept="image/*"
-                  onChange={handlePictureChange}
-                  className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                />
-              </div>
+                <label className="db fw6 lh-copy f6">Select a Picture:</label>
+                <div className="flex flex-wrap">
+                  {images.map((imgName) => (
+                  <div
+                    key={imgName}
+                    className={`pa2 ba ${projectData.imageName === imgName ? 'b--blue' : 'b--transparent'}`}
+                    onClick={() => handleImageSelect(imgName)}
+                    style={{ cursor: 'pointer' }}
+            >
+              <img src={`./public/${imgName}`} alt={imgName} style={{ maxWidth: '100px', maxHeight: '100px' }} />
+            </div>
+          ))}
+        </div>
+      </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="title">
                   Title:
@@ -111,7 +114,7 @@ const CreateProject = () => {
                 <label className="db fw6 lh-copy f6" htmlFor="projectType">
                   Project Type:
                 </label>
-                {/* <select
+                <select
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   id="projectType"
                   name="projectType"
@@ -124,8 +127,8 @@ const CreateProject = () => {
                   <option value="Social Causes">Social Causes</option>
                   <option value="Personal Projects">Personal Projects</option>
                   <option value="Risky Ventures">Risky Ventures</option>
-                </select> */}
-                <select
+                </select>
+                {/* <select
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   id="projectType"
                   name="projectType"
@@ -136,7 +139,7 @@ const CreateProject = () => {
                       {projectType.name}
                     </option>
                   ))}
-                </select>
+                </select> */}
               </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="fundingGoal">
