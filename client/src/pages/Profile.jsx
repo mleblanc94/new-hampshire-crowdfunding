@@ -62,14 +62,18 @@ const Profile = () => {
         {createdProjects.length > 0 ? (
           <ul>
             {createdProjects.map((project, index) => (
-              <li key={index}>{project.title}
+              <li key={index}> 
+              <img src={`./${project.imageName}`} alt={project.imageName} style={{ maxWidth: '100px', maxHeight: '100px' }}  />
+              {project.title}
               <br></br>
               {project.description}
               <br></br>
               <b>Funding Goal :</b>{project.fundingGoal}
               <br></br>
               <b>Current Funding :</b> {project.currentFunding}
+              <br></br><br></br><br></br>
               </li>
+              
             ))}
           </ul>
         ) : (

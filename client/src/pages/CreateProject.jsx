@@ -21,14 +21,17 @@ const CreateProject = () => {
     imageName: 'default.png', // Default image name
   });
 
+ 
   const { loadingPT, errorPT, data } = useQuery(GET_ALL_PROJECT_TYPES);
   if (loadingPT) return <p>Loading...</p>;
   if (errorPT) return <p>Error: {errorPT.message}</p>; 
-
+ 
   const projectTypes = data ? data.getAllProjectTypes : [];
  console.log(projectTypes);
-
+ 
   const [createProject, { loading, error }] = useMutation(CREATE_PROJECT);
+
+  
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -56,7 +59,7 @@ const CreateProject = () => {
           input: {
             ...projectData,
             creator: AuthService.getProfile().data._id,
-            fundingGoal: parseInt(projectData.fundingGoal, 10), // Convert to integer
+            fundingGoal: parseInt(projectData.fundingGoal, 10), // Convert to integer            
           },
         },
       });
@@ -77,7 +80,7 @@ const CreateProject = () => {
       console.error('Error creating project:', error.message);
     }
   };
-
+ 
   return (
     <div className="pa4" style={{ maxWidth: '600px', margin: '0 auto' }}>
       <article className="br2 ba dark-gray b--black-10 mv4 shadow-5">
@@ -127,7 +130,7 @@ const CreateProject = () => {
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="projectType">
                   Project Type:
-                </label>
+                </label>           
                 <select
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   id="projectType"
@@ -170,8 +173,3 @@ const CreateProject = () => {
 };
 
 export default CreateProject;
-
-
-
-
-
