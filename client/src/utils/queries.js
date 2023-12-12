@@ -11,6 +11,15 @@ export const GET_ALL_PROJECTS = gql`
   }
 `;
 
+export const GET_ALL_PROJECT_TYPES = gql`
+  query getAllProjectTypes {
+    getAllProjectTypes {
+      _id
+      name
+    }
+  }
+`;  
+
 export const GET_USER_CREATED = gql`
   query GetUserCreated($userId: ID!) {
     getcreatedProjects(creator: $userId) {
@@ -19,6 +28,7 @@ export const GET_USER_CREATED = gql`
       description
       fundingGoal
       currentFunding
+      imageName
     }
   }
 `;
@@ -39,14 +49,6 @@ export const GET_USER_DONATED = gql`
       _id
       title
       description
-    }
-  }
-  `;
-  export const GET_ALL_PROJECT_TYPES = gql`
-  query {
-    getAllProjectTypes {
-      _id
-      name
     }
   }
 `;

@@ -1,4 +1,4 @@
-const { User, Project } = require('../models');
+const { User, Project, ProjectType } = require('../models');
 const { AuthenticationError } = require('../utils/auth')
 const jwt = require('jsonwebtoken');
 
@@ -27,10 +27,14 @@ const resolvers = {
       const projects = await Project.find({ backers });
       return projects;
     },    
-    getAllProjectTypes: async () => {
-      // Implement logic to fetch all project types from the database
-      const projectTypes = await ProjectType.find();
-      return projectTypes;
+    getAllProjectTypes: async () => {      
+      try {
+        const projectTypes = await ProjectType.find();
+        return projectTypes;
+      } catch (error) {
+        console.error('Error fetching project types:', error);
+        throw new Error('Unable to fetch project types');
+      }
     },
   },
   Mutation: {

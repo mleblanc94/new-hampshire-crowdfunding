@@ -24,16 +24,7 @@ const Home = () => {
 
   const addToFavorites = (project) => {
     setFavorites([...favorites, project]);
-  };
-
-  // const projects = [
-  //   { title: 'Project 1', description: 'Description of Project 1', image: 'project1.jpg' },
-  //   { title: 'Project 2', description: 'Description of Project 2', image: 'project2.jpg' },
-  //   { title: 'Project 3', description: 'Description of Project 3', image: 'project3.jpg' },
-  //   { title: 'Project 4', description: 'Description of Project 4', image: 'project4.jpg' },
-  //   { title: 'Project 5', description: 'Description of Project 5', image: 'project5.jpg' },
-  //   { title: 'Project 6', description: 'Description of Project 6', image: 'project6.jpg' },
-  // ];
+  };  
 
   // Stripe public key (replace with your actual Stripe public key)
   const stripePromise = loadStripe('your_stripe_public_key');
