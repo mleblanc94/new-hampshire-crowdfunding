@@ -38,13 +38,21 @@ const Home = () => {
           At New Hampshire Crowd Funding, we believe in the power of community, passion, and the extraordinary impact that can be made when people come together.
         </p>
         <p>
-          Our platform is more than just a crowdfunding space; its a vibrant ecosystem where creators, backers, and visionaries unite to shape the future. Whether 
-          you are an innovator with a groundbreaking project, a supporter seeking the next big thing, or a dreamer looking to be part of something extraordinary 
-          – you have found your home.
+          Our platform is more than just a crowdfunding space; its a vibrant ecosystem where creators, backers, and visionaries unite to shape the future. Whether
+          you are an innovator with a groundbreaking project, a supporter seeking the next big thing, or a dreamer looking to be part of something extraordinary
+          you have found your home.
         </p>
         <p>
-        oin us in the art of turning dreams into reality, where every project has a story, and every backer is a crucial part of that narrative. 
-        From cutting-edge tech to artistic masterpieces, social causes to entrepreneurial ventures - the possibilities are endless.
+          oin us in the art of turning dreams into reality, where every project has a story, and every backer is a crucial part of that narrative.
+          From cutting-edge tech to artistic masterpieces, social causes to entrepreneurial ventures - the possibilities are endless.
+        </p>
+        <p>
+         Here, we celebrate the power of collaboration, the spirit of creativity, and the profound impact that small contributions can make. 
+         Together, let us build, support, and inspire. Welcome to the community where dreams are fueled, ideas are nurtured, and the extraordinary becomes the norm.
+          <br />
+          Are you ready to bring your vision to life or be part of something incredible? Dive in and explore the world of limitless possibilities. 
+          <br /><br />
+          Welcome to New Hampshire Crowd Funding - Where Dreams Take Flight!
         </p>
       </div>
       <h1 className="tc">Active Projects</h1>
