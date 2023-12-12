@@ -4,12 +4,12 @@ import { useQuery } from '@apollo/client';
 import { CREATE_PROJECT } from '../utils/mutations';
 import { GET_ALL_PROJECT_TYPES } from '../utils/queries';
 import AuthService from '../utils/auth';
-import image1 from '../assets/image1.jpg';
-import image2 from '../assets/image2.jpg';
-import image3 from '../assets/image3.svg';
-import image4 from '../assets/image4.png';
-import image5 from '../assets/image5.jpg';
-import image6 from '../assets/image6.jpg';
+import image1 from '../projImages/image1.jpg';
+import image2 from '../projImages/image2.jpg';
+import image3 from '../projImages/image3.svg';
+import image4 from '../projImages/image4.png';
+import image5 from '../projImages/image5.jpg';
+import image6 from '../projImages/image6.jpg';
 
 const CreateProject = () => {
   const [projectData, setProjectData] = useState({
