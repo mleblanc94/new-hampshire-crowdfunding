@@ -1,23 +1,31 @@
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
+
+  type ProjectType {
+    _id: ID!
+    name: String!
+    description: String
+  }
+
   input ProjectInput {
     title: String!
     description: String!
     creator: String!
-    fundingGoal: Int!
-    currentFunding: Int
-    backers: [String]  # Assuming the backer's IDs are strings
-    interestedIn: [String]  # Assuming the interested user's IDs are strings
+    fundingGoal: Int!    
     projectType: String!
-    imageName: String!
+    imageName: String
+  }
+
+  type Creator {
+    _id: ID!    
   }
 
   type Project {
     _id: ID!
     title: String!
     description: String!
-    creator: String!
+    creator: Creator
     fundingGoal: Int!
     currentFunding: Int
     backers: [User]
@@ -26,7 +34,7 @@ const typeDefs = gql`
     projectType: String!
     createdAt: String
     updatedAt: String
-    imageName: String!
+    imageName: String
   }
 
   type User {
@@ -48,14 +56,15 @@ const typeDefs = gql`
   }
 
   type Query {
-    getAllProjects: [Project]
+    getAllProjects: [Project]    
     getinterestedIn(interestedIn: ID!): [Project]
     getbackedProjects(backers: ID!): [Project]
     getcreatedProjects(creator: ID!): [Project]
+    getAllProjectTypes: [ProjectType] 
   }
 
   type Mutation {
-    createProject(title: String!, description: String!, category: String!, creator: String!, imageName: String!, fundingGoal: Float!): Project
+    createProject(input: ProjectInput!): Project
     createUser(username: String!, email: String!, password: String!): Auth
     addTointerestedIn(projectId: ID!, userId: ID!): Project
     addBackerToProject(projectId: ID!, userId: ID!, currentFunding: Int): Project

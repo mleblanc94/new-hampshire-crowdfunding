@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 //import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import {CREATE_PROJECT} from '../utils/mutations';
-import  AuthService  from '../utils/auth';
+import { useQuery } from '@apollo/client';
+import { CREATE_PROJECT } from '../utils/mutations';
+import { GET_ALL_PROJECT_TYPES } from '../utils/queries';
+import AuthService from '../utils/auth';
+//import { GET_ALL_PROJECT_TYPES } from '../path-to-your-graphql-query-file';
+
+
 const CreateProject = () => {
   //const history = useHistory();
   const [projectData, setProjectData] = useState({
@@ -13,7 +18,12 @@ const CreateProject = () => {
     projectType: '',
     imageName: null,
   });
+
   const [createProject, { loading, error }] = useMutation(CREATE_PROJECT);
+  const { loadingPT, errorPT, data } = useQuery(GET_ALL_PROJECT_TYPES);
+  console.log(data);
+  const projectTypes = data.getAllProjectTypes;
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setProjectData({ ...projectData, [name]: value });
@@ -24,7 +34,8 @@ const CreateProject = () => {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-     try {
+
+    try {
       const { data } = await createProject({
         variables: {
           input: {
@@ -35,12 +46,16 @@ const CreateProject = () => {
           },
         },
       });
+
       // Handle the response, e.g., show a success message, redirect, etc.
       console.log('Project created:', data.createProject);
+
       // If you have a token from authentication, you can use it here
       const userToken = AuthService.loggedIn() ? AuthService.getToken() : null;
+
       // Use the token as needed, e.g., store it, redirect, etc.
       console.log('User Token:', userToken);
+
       //history.push('/');
       window.location.assign('/');
     } catch (error) {
@@ -96,7 +111,7 @@ const CreateProject = () => {
                 <label className="db fw6 lh-copy f6" htmlFor="projectType">
                   Project Type:
                 </label>
-                <select
+                {/* <select
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   id="projectType"
                   name="projectType"
@@ -109,11 +124,23 @@ const CreateProject = () => {
                   <option value="Social Causes">Social Causes</option>
                   <option value="Personal Projects">Personal Projects</option>
                   <option value="Risky Ventures">Risky Ventures</option>
+                </select> */}
+                <select
+                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  id="projectType"
+                  name="projectType"
+                  onChange={handleInputChange}
+                >
+                  {projectTypes.map((projectType) => (
+                    <option key={projectType._id} value={projectType._id}>
+                      {projectType.name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="mv3">
                 <label className="db fw6 lh-copy f6" htmlFor="fundingGoal">
-                fundingGoal:
+                  fundingGoal:
                 </label>
                 <input
                   className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
@@ -138,4 +165,10 @@ const CreateProject = () => {
     </div>
   );
 };
+
 export default CreateProject;
+
+
+
+
+
