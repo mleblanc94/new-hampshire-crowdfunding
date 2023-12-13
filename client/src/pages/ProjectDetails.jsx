@@ -61,8 +61,6 @@ const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
         <h2>{project.title}</h2>
         <img src={getImageSrc(project.imageName)} alt={project.title} className="w-50" />
         <p>{project.description}</p>
-        <p>Category: {project.category}</p>
-        <button onClick={() => addToFavorites(project)}>Add to Favorites</button>
 
         {/* Mock Credit Card Form for Visual Display */}
         <form onSubmit={handleSubmit}>
@@ -78,9 +76,9 @@ const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
             />
           </div>
           <div className="mock-credit-card-input">
-            <input type="text" placeholder="Card Number" disabled />
-            <input type="text" placeholder="MM/YY" disabled />
-            <input type="text" placeholder="CVC" disabled />
+            <input type="text" placeholder="Card Number"  />
+            <input type="text" placeholder="MM/YY"  />
+            <input type="text" placeholder="CVC"  />
           </div>
           {donationAmount > 0 && (
             <button type="submit">Donate</button>
