@@ -125,6 +125,7 @@ const CreateProject = () => {
                   onChange={handleInputChange} required
                 >
                   <option value="">Select a Project Type</option>
+
                   {projectTypes.map((projectType) => (
                     <option key={projectType._id} value={projectType._id}>
                       {projectType.name}
