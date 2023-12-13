@@ -68,7 +68,7 @@ const Home = () => {
               <main className="pa4 black-80">
                 <h2 className="f4 fw6">{project.title}</h2>
                 <img
-                  src={`./${project.imageName}`}
+                  src={`../projImages/${project.imageName}`}
                   style={{ maxWidth: '250px', maxHeight: '250px' }}
                   alt={project.title}
                   className="w-100 pointer"
