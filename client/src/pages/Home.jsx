@@ -6,8 +6,26 @@ import { useQuery } from '@apollo/client';
 import { GET_ALL_PROJECTS } from '../utils/queries';
 import 'tachyons';
 import './Home.css';
+import image1 from '../projImages/image1.jpg';
+import image2 from '../projImages/image2.jpg';
+import image3 from '../projImages/image3.svg';
+import image4 from '../projImages/image4.png';
+import image5 from '../projImages/image5.jpg';
+import image6 from '../projImages/image6.jpg';
 
 const Home = () => {
+  const getImageSrc = (imageName) => {
+    const imageMap = {
+      'image1': image1,
+      'image2': image2,
+      'image3': image3,
+      'image4': image4,
+      'image5': image5,
+      'image6': image6,
+    };
+    return imageMap[imageName] || imageMap['default.png']; // Fallback to a default image if not found
+  };
+
   const [selectedProject, setSelectedProject] = useState(null);
   const [favorites, setFavorites] = useState([]);
 
@@ -62,17 +80,17 @@ const Home = () => {
             <article
               key={index}
               className="br2 ba dark-gray b--black-10 mv4 w-100 w-40-l shadow-5 ma2"
-              onClick={() => openProjectDetails(project)} // Open modal on click
-              style={{ cursor: 'pointer' }} // Set cursor to pointer for indication
+              onClick={() => openProjectDetails(project)}
+              style={{ cursor: 'pointer' }}
             >
               <main className="pa4 black-80">
                 <h2 className="f4 fw6">{project.title}</h2>
                 <img
-                  src={`../projImages/${project.imageName}`}
+                  src={getImageSrc(project.imageName)}
                   style={{ maxWidth: '250px', maxHeight: '250px' }}
                   alt={project.title}
                   className="w-100 pointer"
-                  onClick={(e) => e.stopPropagation()} // Prevent modal open on image click
+                  onClick={(e) => e.stopPropagation()}
                 />
                 <p>{project.description}</p>
                 <button onClick={() => addToFavorites(project)}>Donate</button>
