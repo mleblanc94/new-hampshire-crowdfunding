@@ -1,13 +1,29 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import AuthService from '../utils/auth';
 import { UPDATE_FUNDING } from '../utils/mutations'; // Import your mutation
 import './Home.css';
+import image1 from '../projImages/image1.jpg';
+import image2 from '../projImages/image2.jpg';
+import image3 from '../projImages/image3.svg';
+import image4 from '../projImages/image4.png';
+import image5 from '../projImages/image5.jpg';
+import image6 from '../projImages/image6.jpg';
 
 const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
+  const getImageSrc = (imageName) => {
+    const imageMap = {
+      'image1': image1,
+      'image2': image2,
+      'image3': image3,
+      'image4': image4,
+      'image5': image5,
+      'image6': image6,
+    };
+    return imageMap[imageName] || imageMap['default.png']; // Fallback to a default image if not found
+  };
+
   const [donationAmount, setDonationAmount] = useState(0);
-  const stripe = useStripe();
-  const elements = useElements();
 
   // Define your GraphQL mutation for updating funding
   const [updateFunding] = useMutation(UPDATE_FUNDING);
@@ -21,31 +37,20 @@ const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
-      return;
-    }
+    const userId = AuthService.getProfile().data._id; // Retrieve user ID from AuthService
 
-    const cardElement = elements.getElement(CardElement);
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement,
-    });
-
-    if (error) {
-      console.error('Error:', error);
-    } else {
-      // Call the mutation to update the funding in the database
-      updateFunding({ variables: { projectId: project.id, amount: donationAmount } })
-        .then(response => {
-          console.log('Funding updated:', response);
-          // You may want to do something after updating the funding, like closing the modal or showing a success message
-          closeModal();
-        })
-        .catch(err => console.error('Error updating funding:', err));
-
-      console.log('PaymentMethod:', paymentMethod);
-    }
+    // Call the mutation to update the funding in the database
+    // and potentially add the user as a backer
+    updateFunding({ variables: { 
+      projectId: project.id, 
+      amount: donationAmount, 
+      userId // Include this if your mutation supports adding a backer
+    }})
+    .then(response => {
+      console.log('Funding updated:', response);
+      closeModal(); // Close modal or show a success message
+    })
+    .catch(err => console.error('Error updating funding:', err));
   };
 
   return (
@@ -53,12 +58,12 @@ const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
       <div className="modal-content">
         <span className="close" onClick={closeModal}>&times;</span>
         <h2>{project.title}</h2>
-        <img src={project.image} alt={project.title} className="w-100" />
+        <img src={getImageSrc(project.imageName)} alt={project.title} className="w-100" />
         <p>{project.description}</p>
         <p>Category: {project.category}</p>
         <button onClick={() => addToFavorites(project)}>Add to Favorites</button>
 
-        {/* Custom Donation Form */}
+        {/* Mock Credit Card Form for Visual Display */}
         <form onSubmit={handleSubmit}>
           <label htmlFor="donationAmount">Enter Donation Amount:</label>
           <div className="dollar-input">
@@ -71,9 +76,11 @@ const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
               onChange={handleDonationChange}
             />
           </div>
-          {donationAmount > 0 && (
-            <CardElement />
-          )}
+          <div className="mock-credit-card-input">
+            <input type="text" placeholder="Card Number" disabled />
+            <input type="text" placeholder="MM/YY" disabled />
+            <input type="text" placeholder="CVC" disabled />
+          </div>
           {donationAmount > 0 && (
             <button type="submit">Donate</button>
           )}
@@ -84,4 +91,6 @@ const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
 };
 
 export default ProjectDetails;
+
+
 
