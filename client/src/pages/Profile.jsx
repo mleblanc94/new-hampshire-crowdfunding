@@ -100,21 +100,29 @@ const Profile = () => {
     {/* Projects Interested In */}
     <section>
       <h2>Projects Interested In</h2>
-      <ul className="project-list">
-        {interestProjects.map((project, index) => (
-          <li key={index}>{project.title}</li>
+      <div className="project-list">
+        {interestIn.map((project, index) => (
+          <div key={index} className="project-card shadow-5">
+          <img src={`./${project.imageName}`} alt={project.imageName} className='shadow-5' />
+          <h3>{project.title}</h3>
+          <p>{project.description}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </section>
 
     {/* Projects Donated To */}
     <section>
       <h2>Projects Donated To</h2>
-      <ul className="project-list">
-        {donatedProjects.map((project, index) => (
-          <li key={index}>{project.title}</li>
-        ))}
-      </ul>
+      <div className="project-list">
+        {backedProjects.map((project, index) => (
+         <div key={index} className="project-card shadow-5">
+         <img src={`./${project.imageName}`} alt={project.imageName} className='shadow-5' />
+         <h3>{project.title}</h3>
+         <p>{project.description}</p>
+         </div>
+       ))}
+     </div>
     </section>
   </div>
   );
