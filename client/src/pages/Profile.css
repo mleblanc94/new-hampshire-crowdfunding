@@ -1,0 +1,27 @@
+/* Add these styles to your CSS file */
+.project-cards {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .project-card {
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin: 16px;
+    max-width: 300px;
+  }
+  
+  .project-card img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .project-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .project-list li {
+    margin-bottom: 8px;
+  }
+  

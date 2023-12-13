@@ -5,6 +5,7 @@ import jwt_decode from 'jwt-decode';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import  AuthService  from '../utils/auth';
+import './Profile.css';
 
 const Profile = () => {
 
@@ -51,64 +52,52 @@ const Profile = () => {
 
   return (
     <div className="pa4">
-      <header>
-        <h1>Hi {username}!</h1>
-        <p>These are the projects that you have created, have interest in, or have donated to:</p>
-      </header>
-      
-      {/* Projects Created */}
-      <section>
-        <h2>Projects Created</h2>
-        {createdProjects.length > 0 ? (
-          <ul>
-            {createdProjects.map((project, index) => (
-              <li key={index}> 
-              <img src={`./${project.imageName}`} alt={project.imageName} style={{ maxWidth: '100px', maxHeight: '100px' }}  />
-              {project.title}
-              <br></br>
-              {project.description}
-              <br></br>
-              <b>Funding Goal :</b>{project.fundingGoal}
-              <br></br>
-              <b>Current Funding :</b> {project.currentFunding}
-              <br></br><br></br><br></br>
-              </li>
-              
-            ))}
-          </ul>
-        ) : (
-          <p>N/A</p>
-        )}
-      </section>
+    <header>
+      <h1>Hi {username}!</h1>
+      <p>These are the projects that you have created, have interest in, or have donated to:</p>
+    </header>
 
-      {/* Projects Interested In */}
-      <section>
-        <h2>Projects Interested In</h2>
-        {interestProjects.length > 0 ? (
-          <ul>
-            {interestProjects.map((project, index) => (
-              <li key={index}>{project.title}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>N/A</p>
-        )}
-      </section>
+    {/* Projects Created */}
+    <section>
+      <h2>Projects Created</h2>
+      <div className="project-cards">
+        {createdProjects.map((project, index) => (
+          <div key={index} className="project-card shadow-5">
+            <img src={`./${project.imageName}`} alt={project.imageName} className='shadow-5' />
+            <h3>{project.title}</h3>
+            <p>{project.description}</p>
+            <p>
+              <b>Funding Goal:</b> {project.fundingGoal}
+            </p>
+            <p>
+              <b>Current Funding:</b> {project.currentFunding}
+            </p>
+            {/* Add more details or buttons as needed */}
+          </div>
+        ))}
+      </div>
+    </section>
 
-      {/* Projects Donated To */}
-      <section>
-        <h2>Projects Donated To</h2>
-        {donatedProjects.length > 0 ? (
-          <ul>
-            {donatedProjects.map((project, index) => (
-              <li key={index}>{project.title}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>N/A</p>
-        )}
-      </section>
-    </div>
+    {/* Projects Interested In */}
+    <section>
+      <h2>Projects Interested In</h2>
+      <ul className="project-list">
+        {interestProjects.map((project, index) => (
+          <li key={index}>{project.title}</li>
+        ))}
+      </ul>
+    </section>
+
+    {/* Projects Donated To */}
+    <section>
+      <h2>Projects Donated To</h2>
+      <ul className="project-list">
+        {donatedProjects.map((project, index) => (
+          <li key={index}>{project.title}</li>
+        ))}
+      </ul>
+    </section>
+  </div>
   );
 };
 
