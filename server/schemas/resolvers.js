@@ -1,6 +1,8 @@
 const { User, Project, ProjectType } = require('../models');
 const { AuthenticationError } = require('../utils/auth')
 const jwt = require('jsonwebtoken');
+const { ObjectId } = require('mongoose').Types;
+const mongoose = require('mongoose');
 
 const secret = 'mysecretsshhhh';
 const expiration = '2h';
@@ -19,9 +21,23 @@ const resolvers = {
       const projects = await Project.find({ creator });
       return projects;
     },
-    getinterestedIn: async (_, { interestedIn }) => {
-      const projects = await Project.find({ interestedIn });
+    getNotcreatedProjects: async (_, { creator }) => {
+      const projects = await Project.find({ creator: { $ne: creator } });
       return projects;
+    },
+    getinterestedIn: async (_, { interestedIn }) => {
+      try {
+        const interestedInObjectId = new mongoose.Types.ObjectId(interestedIn);
+
+        const projects = await Project.find({ interestedIn: { $in: interestedIn }} );
+        console.log('incoming:', interestedIn);
+        console.log('Fetched projects:', interestedInObjectId);
+        console.log('Fetched projects:', projects);
+        return projects;
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        throw new Error('Unable to fetch projects');
+      }
     },
     getbackedProjects: async (_, { backers }) => {
       const projects = await Project.find({ backers });
@@ -68,14 +84,36 @@ const resolvers = {
       return { token, user };
     }
   },
-    addTointerestedIn: async (_, { projectId, userId }) => {
-      const project = await Project.findByIdAndUpdate(
-        projectId,
-        { $addToSet: { interestedIn: userId } },
-        { new: true }
-      );
+  addTointerestedIn: async (projectId, userId) => {
+    try {
+
+      console.log('Received projectId:', userId.userId);
+      // Find the project by projectId
+      const project = await Project.findById(userId.projectId);
+
+      // Check if the project exists
+      if (!project) {
+        throw new Error('Project not found.');
+      }
+
+      const userIdObjectId = new ObjectId(userId.userId);
+      console.log('userIdObjectId:', userIdObjectId);
+      // Check if the user is already a backer
+      if (project.interestedIn.includes(userIdObjectId)) {
+        throw new Error('User is already a backer for this project.');
+      }
+
+      // Add the user to the backers array of the project
+      project.interestedIn.push(userIdObjectId);
+
+      // Save the updated project
+      await project.save();
+
       return project;
-    },
+    } catch (error) {
+      throw new Error(`Error adding backer: ${error.message}`);
+    }
+  },
     addBackerToProject: async (_, { projectId, userId }) => {
       const project = await Project.findByIdAndUpdate(
         projectId,

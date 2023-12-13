@@ -90,8 +90,7 @@ const Profile = () => {
             </p>
             <p>
               <b>Current Funding:</b> {project.currentFunding}
-            </p>
-            {/* Add more details or buttons as needed */}
+            </p>            
           </div>
         ))}
       </div>
@@ -106,6 +105,12 @@ const Profile = () => {
           <img src={`./${project.imageName}`} alt={project.imageName} className='shadow-5' />
           <h3>{project.title}</h3>
           <p>{project.description}</p>
+          <p>
+              <b>Funding Goal:</b> {project.fundingGoal}
+            </p>
+            <p>
+              <b>Current Funding:</b> {project.currentFunding}
+            </p>
           </div>
         ))}
       </div>
@@ -115,11 +120,17 @@ const Profile = () => {
     <section>
       <h2>Projects Donated To</h2>
       <div className="project-list">
-        {backedProjects.map((project, index) => (
+        {donatedProjects.map((project, index) => (
          <div key={index} className="project-card shadow-5">
          <img src={`./${project.imageName}`} alt={project.imageName} className='shadow-5' />
          <h3>{project.title}</h3>
          <p>{project.description}</p>
+         <p>
+              <b>Funding Goal:</b> {project.fundingGoal}
+            </p>
+            <p>
+              <b>Current Funding:</b> {project.currentFunding}
+            </p>
          </div>
        ))}
      </div>
