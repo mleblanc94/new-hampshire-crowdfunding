@@ -17,7 +17,16 @@ const typeDefs = gql`
     imageName: String
   }
 
+  input AddInterestedUserInput {
+    projectId: ID!
+    userId: ID!
+  }
+
   type Creator {
+    _id: ID!    
+  }
+
+  type backers {
     _id: ID!    
   }
 
@@ -60,13 +69,14 @@ const typeDefs = gql`
     getinterestedIn(interestedIn: ID!): [Project]
     getbackedProjects(backers: ID!): [Project]
     getcreatedProjects(creator: ID!): [Project]
+    getNotcreatedProjects(creator: ID!): [Project]
     getAllProjectTypes: [ProjectType] 
   }
 
   type Mutation {
     createProject(input: ProjectInput!): Project
     createUser(username: String!, email: String!, password: String!): Auth
-    addTointerestedIn(projectId: ID!, userId: ID!): Project
+    addTointerestedIn(projectId: String!, userId: String!): Project    
     addBackerToProject(projectId: ID!, userId: ID!, currentFunding: Int): Project
     login(email: String!, password: String!): Auth
     updateFunding(projectId: ID!, amount: Int!, userId: ID!): Project

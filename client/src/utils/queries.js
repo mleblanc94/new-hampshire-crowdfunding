@@ -10,6 +10,9 @@ export const GET_ALL_PROJECTS = gql`
       imageName
       fundingGoal
       currentFunding
+      interestedIn {
+        _id
+      }
     }
   }
 `;
@@ -36,12 +39,37 @@ export const GET_USER_CREATED = gql`
   }
 `;
 
+export const GET_USER_NOT_CREATED = gql`
+  query GetUserNotCreated($userId: ID!) {
+    getNotcreatedProjects(creator: $userId) {
+      _id
+      title
+      description
+      fundingGoal
+      currentFunding
+      backers {
+        _id
+      }
+      interestedIn  {
+        _id
+      }
+      imageName
+      
+    }
+  }
+`;
+
 export const GET_USER_INTERESTED = gql`
   query GetUserInterested($userId: ID!) {
     getinterestedIn(interestedIn: $userId) {
       _id
       title
       description
+      fundingGoal
+      currentFunding
+      interestedIn  {
+        _id
+      }
     }
   }
 `;
@@ -52,6 +80,11 @@ export const GET_USER_DONATED = gql`
       _id
       title
       description
+      fundingGoal
+      currentFunding
+      backers {
+        _id
+      }
     }
   }
 `;
