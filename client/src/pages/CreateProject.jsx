@@ -110,7 +110,7 @@ const CreateProject = () => {
                   type="text"
                   id="title"
                   name="title"
-                  onChange={handleInputChange}
+                  onChange={handleInputChange} required
                 />
               </div>
               <div className="mv3">
@@ -122,7 +122,7 @@ const CreateProject = () => {
                   id="description"
                   name="description"
                   rows="5"
-                  onChange={handleInputChange}
+                  onChange={handleInputChange} required
                 ></textarea>
               </div>
               <div className="mv3">
@@ -133,8 +133,10 @@ const CreateProject = () => {
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   id="projectType"
                   name="projectType"
-                  onChange={handleInputChange}
+                  onChange={handleInputChange} required
                 >
+                  <option value="">Select a Project Type</option>
+
                   {projectTypes.map((projectType) => (
                     <option key={projectType._id} value={projectType._id}>
                       {projectType.name}
@@ -151,7 +153,7 @@ const CreateProject = () => {
                   type="number"
                   id="fundingGoal"
                   name="fundingGoal"
-                  onChange={handleInputChange}
+                  onChange={handleInputChange} required
                 />
               </div>
               <div className="tc">

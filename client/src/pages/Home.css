@@ -17,3 +17,8 @@
   .close {
     cursor: pointer;
   }
+
+  .project-card img {
+    max-width: 100%;
+    height: auto;
+  }
