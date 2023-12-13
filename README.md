@@ -7,6 +7,15 @@ A website dedicated to helping those with ideas raise the money to make their bu
 - We creating this application to work on our skills particularly with React, Node.js, Express.js, and MongoDB. I think connecting all the pieces was great for us to understand the best way to work as a team while creating the application.
 - By creating this application, we solved the issue of learning how MERN applications are created as well as created a place where users can go to invest in companies they have interest in.
 - Through doing this activity, we learned more about creating full stack MERN applications and how to be the most efficient when doing so.
+
+## Technologies Used
+- React.js
+- Express.js
+- Node.js
+- MongoDB
+- JWT
+- Vite
+- Tachyons (for CSS)
   
 ## Installation
 
