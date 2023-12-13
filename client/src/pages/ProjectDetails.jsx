@@ -61,8 +61,7 @@ const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
         <h2>{project.title}</h2>
         <img src={getImageSrc(project.imageName)} alt={project.title} className="w-50" />
         <p>{project.description}</p>
-        <p>Category: {project.category}</p>
-        <button onClick={() => addToFavorites(project)}>Add to Favorites</button>
+        <p>Category: {project.projectType}</p>
 
         {/* Mock Credit Card Form for Visual Display */}
         <form onSubmit={handleSubmit}>
