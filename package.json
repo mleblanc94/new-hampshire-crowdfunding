@@ -23,6 +23,7 @@
     "concurrently": "^5.1.0"
   },
   "dependencies": {
+    "@apollo/client": "^3.8.8",
     "@apollo/server": "^4.9.5",
     "@vitejs/plugin-react": "^4.2.1",
     "apollo-server-express": "^3.13.0",

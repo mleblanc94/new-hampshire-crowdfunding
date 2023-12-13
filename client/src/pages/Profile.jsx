@@ -101,7 +101,7 @@ const Profile = () => {
     <section>
       <h2>Projects Interested In</h2>
       <div className="project-list">
-        {interestIn.map((project, index) => (
+        {interestProjects.map((project, index) => (
           <div key={index} className="project-card shadow-5">
           <img src={`./${project.imageName}`} alt={project.imageName} className='shadow-5' />
           <h3>{project.title}</h3>

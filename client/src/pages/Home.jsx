@@ -76,27 +76,32 @@ const Home = () => {
       <h1 className="tc">Active Projects</h1>
       <div className="flex justify-center">
         <div className="flex flex-wrap justify-between mw8">
-          {projects.map((project, index) => (
-            <article
-              key={index}
-              className="br2 ba dark-gray b--black-10 mv4 w-100 w-40-l shadow-5 ma2"
-              onClick={() => openProjectDetails(project)}
-              style={{ cursor: 'pointer' }}
-            >
-              <main className="pa4 black-80">
-                <h2 className="f4 fw6">{project.title}</h2>
-                <img
-                  src={getImageSrc(project.imageName)}
-                  style={{ maxWidth: '250px', maxHeight: '250px' }}
-                  alt={project.title}
-                  className="w-100 pointer"
-                  onClick={(e) => e.stopPropagation()}
-                />
-                <p>{project.description}</p>
-                <button onClick={() => addToFavorites(project)}>Donate</button>
-              </main>
-            </article>
-          ))}
+        {projects.map((project, index) => (
+  <article
+    key={index}
+    className="br2 ba dark-gray b--black-10 mv4 w-100 w-40-l shadow-5 ma2"
+    onClick={() => openProjectDetails(project)}
+    style={{ cursor: 'pointer' }}
+  >
+    <main className="pa4 black-80">
+      <h2 className="f4 fw6">{project.title}</h2>
+      <img
+        src={getImageSrc(project.imageName)}
+        style={{ maxWidth: '250px', maxHeight: '250px' }}
+        alt={project.title}
+        className="w-100 pointer"
+        onClick={(e) => e.stopPropagation()}
+      />
+      <p>{project.description}</p>
+      {/* Display funding information */}
+      <div className="funding-info">
+        <p>Goal: ${project.fundingGoal}</p>
+        <p>Current Funding: ${project.currentFunding}</p>
+      </div>
+      <button onClick={() => addToFavorites(project)}>Donate</button>
+    </main>
+  </article>
+))}
         </div>
       </div>
 
