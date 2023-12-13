@@ -71,12 +71,12 @@ const CreateProject = () => {
   };
 
   const images = [
-    { name: 'image1.jpg', src: image1 },
-    { name: 'image2.jpg', src: image2 },
-    { name: 'image3.svg', src: image3 },
-    { name: 'image4.png', src: image4 },
-    { name: 'image5.jpg', src: image5 },
-    { name: 'image6.jpg', src: image6 },
+    { name: 'image1', src: image1 },
+    { name: 'image2', src: image2 },
+    { name: 'image3', src: image3 },
+    { name: 'image4', src: image4 },
+    { name: 'image5', src: image5 },
+    { name: 'image6', src: image6 },
   ];
  
   return (
