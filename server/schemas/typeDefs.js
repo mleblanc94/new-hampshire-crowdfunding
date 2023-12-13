@@ -69,6 +69,7 @@ const typeDefs = gql`
     addTointerestedIn(projectId: ID!, userId: ID!): Project
     addBackerToProject(projectId: ID!, userId: ID!, currentFunding: Int): Project
     login(email: String!, password: String!): Auth
+    updateFunding(projectId: ID!, amount: Int!, userId: ID!): Project
   }
 `;
 

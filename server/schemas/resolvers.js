@@ -96,6 +96,28 @@ const resolvers = {
 
       return { token, user };// Return token and user   
     },
+    updateFunding: async (_, { projectId, amount, userId }) => {
+      try {
+        // Find the project by ID and increment its currentFunding and add userId to backers
+        const updatedProject = await Project.findByIdAndUpdate(
+          projectId,
+          { 
+            $inc: { currentFunding: amount }, // Increment currentFunding by the specified amount
+            $addToSet: { backers: userId } // Add userId to backers array
+          },
+          { new: true } // Return the updated document
+        ).populate('backers');
+
+        if (!updatedProject) {
+          throw new Error('Project not found or unable to update funding');
+        }
+
+        return updatedProject;
+      } catch (error) {
+        console.error('Error updating project funding:', error);
+        throw new Error('Unable to update project funding');
+      }
+    },
   },
   Project: {
     backers: async (parent) => {

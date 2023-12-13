@@ -43,10 +43,14 @@ mutation CreateProject($input: ProjectInput!) {
 `;
 
 export const UPDATE_FUNDING = gql`
-  mutation UpdateFunding($projectId: ID!, $amount: Float!) {
-    updateFunding(projectId: $projectId, amount: $amount) {
+  mutation UpdateFunding($projectId: ID!, $amount: Float!, $userId: ID!) {
+    updateFunding(projectId: $projectId, amount: $amount, userId: $userId) {
       id
       currentFunding
+      backers {
+        id
+        username
+      }
     }
   }
 `;
