@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { UPDATE_FUNDING } from '../utils/mutations'; // Import your mutation
 import './Home.css';
 
 const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
   const [donationAmount, setDonationAmount] = useState(0);
   const stripe = useStripe();
   const elements = useElements();
+
+  // Define your GraphQL mutation for updating funding
+  const [updateFunding] = useMutation(UPDATE_FUNDING);
 
   const handleDonationChange = (event) => {
     const amount = parseFloat(event.target.value);
@@ -22,7 +27,6 @@ const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
     }
 
     const cardElement = elements.getElement(CardElement);
-
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card: cardElement,
@@ -31,8 +35,15 @@ const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
     if (error) {
       console.error('Error:', error);
     } else {
-      // On successful token creation, handle the payment method or token on your backend
-      // You'll need to send this 'paymentMethod.id' to your server for further processing
+      // Call the mutation to update the funding in the database
+      updateFunding({ variables: { projectId: project.id, amount: donationAmount } })
+        .then(response => {
+          console.log('Funding updated:', response);
+          // You may want to do something after updating the funding, like closing the modal or showing a success message
+          closeModal();
+        })
+        .catch(err => console.error('Error updating funding:', err));
+
       console.log('PaymentMethod:', paymentMethod);
     }
   };

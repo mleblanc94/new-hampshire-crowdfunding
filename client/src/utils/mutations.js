@@ -41,3 +41,12 @@ mutation CreateProject($input: ProjectInput!) {
     }
   }
 `;
+
+export const UPDATE_FUNDING = gql`
+  mutation UpdateFunding($projectId: ID!, $amount: Float!) {
+    updateFunding(projectId: $projectId, amount: $amount) {
+      id
+      currentFunding
+    }
+  }
+`;
