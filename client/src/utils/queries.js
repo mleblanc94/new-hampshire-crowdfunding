@@ -8,6 +8,8 @@ export const GET_ALL_PROJECTS = gql`
       description
       projectType
       imageName
+      fundingGoal
+      currentFunding
     }
   }
 `;

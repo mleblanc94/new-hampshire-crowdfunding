@@ -38,11 +38,12 @@ const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
     event.preventDefault();
 
     const userId = AuthService.getProfile().data._id; // Retrieve user ID from AuthService
+    console.log(userId)
 
     // Call the mutation to update the funding in the database
     // and potentially add the user as a backer
     updateFunding({ variables: { 
-      projectId: project.id, 
+      projectId: project._id,
       amount: donationAmount, 
       userId // Include this if your mutation supports adding a backer
     }})
