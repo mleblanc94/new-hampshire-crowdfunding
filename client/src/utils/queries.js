@@ -67,6 +67,7 @@ export const GET_USER_INTERESTED = gql`
       description
       fundingGoal
       currentFunding
+      imageName
       interestedIn  {
         _id
       }
@@ -82,6 +83,7 @@ export const GET_USER_DONATED = gql`
       description
       fundingGoal
       currentFunding
+      imageName
       backers {
         _id
       }

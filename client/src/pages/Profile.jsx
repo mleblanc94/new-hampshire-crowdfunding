@@ -102,7 +102,7 @@ const Profile = () => {
       <div className="project-list">
         {interestProjects.map((project, index) => (
           <div key={index} className="project-card shadow-5">
-          <img src={`./${project.imageName}`} alt={project.imageName} className='shadow-5' />
+          <img src={getImageSrc(project.imageName)} alt={getImageSrc(project.imageName)} className='shadow-5' />
           <h3>{project.title}</h3>
           <p>{project.description}</p>
           <p>
@@ -122,7 +122,7 @@ const Profile = () => {
       <div className="project-list">
         {donatedProjects.map((project, index) => (
          <div key={index} className="project-card shadow-5">
-         <img src={`./${project.imageName}`} alt={project.imageName} className='shadow-5' />
+         <img src={getImageSrc(project.imageName)} alt={getImageSrc(project.imageName)} className='shadow-5' />
          <h3>{project.title}</h3>
          <p>{project.description}</p>
          <p>

@@ -59,7 +59,7 @@ const ProjectDetails = ({ project, addToFavorites, closeModal }) => {
       <div className="modal-content">
         <span className="close" onClick={closeModal}>&times;</span>
         <h2>{project.title}</h2>
-        <img src={getImageSrc(project.imageName)} alt={project.title} className="w-100" />
+        <img src={getImageSrc(project.imageName)} alt={project.title} className="w-50" />
         <p>{project.description}</p>
         <p>Category: {project.category}</p>
         <button onClick={() => addToFavorites(project)}>Add to Favorites</button>
