@@ -63,7 +63,7 @@ const CreateProject = () => {
       console.log('User Token:', userToken);
 
       //history.push('/');
-      window.location.assign('/');
+      window.location.assign('/profile');
     } catch (error) {
       // Handle error, e.g., show an error message
       console.error('Error creating project:', error.message);

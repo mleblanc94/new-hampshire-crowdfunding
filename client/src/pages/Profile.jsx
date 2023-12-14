@@ -71,14 +71,14 @@ const Profile = () => {
 
   return (
     <div className="pa4">
-    <header>
-      <h1>Hi {username}!</h1>
-      <p>These are the projects that you have created, have interest in, or have donated to:</p>
+    <header>      
+      <p><h3>These are the projects that you have created, have interest in, or have donated to:</h3></p>
     </header>
 
     {/* Projects Created */}
-    <section>
+    <section>      
       <h2>Projects Created</h2>
+      <line /> 
       <div className="project-cards">
         {createdProjects.map((project, index) => (
           <div key={index} className="project-card shadow-5">
@@ -99,7 +99,7 @@ const Profile = () => {
     {/* Projects Interested In */}
     <section>
       <h2>Projects Interested In</h2>
-      <div className="project-list">
+      <div className="project-cards">
         {interestProjects.map((project, index) => (
           <div key={index} className="project-card shadow-5">
           <img src={getImageSrc(project.imageName)} alt={getImageSrc(project.imageName)} className='shadow-5' />
@@ -119,7 +119,7 @@ const Profile = () => {
     {/* Projects Donated To */}
     <section>
       <h2>Projects Donated To</h2>
-      <div className="project-list">
+      <div className="project-cards">
         {donatedProjects.map((project, index) => (
          <div key={index} className="project-card shadow-5">
          <img src={getImageSrc(project.imageName)} alt={getImageSrc(project.imageName)} className='shadow-5' />
