@@ -43,10 +43,9 @@ mutation CreateProject($input: ProjectInput!) {
 `;
 
 export const ADD_INTERESTED_USER = gql`
-  mutation addTointerestedIn($projectId: String!, $userId: String!) {
+  mutation addTointerestedIn($projectId:  ID!, $userId: ID!) {
     addTointerestedIn(projectId: $projectId, userId: $userId) {
-      _id
-      title
+      _id      
       interestedIn {
         _id        
       }

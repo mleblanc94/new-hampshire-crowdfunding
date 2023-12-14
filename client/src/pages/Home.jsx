@@ -69,8 +69,6 @@ const Home = () => {
   const addInterested = async (projectId, e) => {
     e.stopPropagation();
 
-    console.log(userId);
-    console.log(projectId);
     try {
       const { data } = await addInterestedIn({
         variables: {
@@ -78,12 +76,6 @@ const Home = () => {
           userId: userId,
         },
       });
-
-      // Add the project ID to the local storage for the logged-in user
-      const userInterestedProjects = JSON.parse(localStorage.getItem(userId)) || [];
-      userInterestedProjects.push(projectId);
-      localStorage.setItem(userId, JSON.stringify(userInterestedProjects));
-
 
       // Handle the response if needed
       console.log('User added to interestedIn:', data.addTointerestedIn);

@@ -9,7 +9,7 @@ const expiration = '2h';
 
 const signToken = ({ username, email, _id }) => {
   const payload = { username, email, _id };
-  return jwt.sign({ data: payload }, secret, { expiresIn: expiration})
+  return jwt.sign({ data: payload }, secret, { expiresIn: expiration })
 }
 
 const resolvers = {
@@ -28,11 +28,7 @@ const resolvers = {
     getinterestedIn: async (_, { interestedIn }) => {
       try {
         const interestedInObjectId = new mongoose.Types.ObjectId(interestedIn);
-
-        const projects = await Project.find({ interestedIn: { $in: interestedIn }} );
-        console.log('incoming:', interestedIn);
-        console.log('Fetched projects:', interestedInObjectId);
-        console.log('Fetched projects:', projects);
+        const projects = await Project.find({ interestedIn: { $in: interestedIn } });
         return projects;
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -42,8 +38,8 @@ const resolvers = {
     getbackedProjects: async (_, { backers }) => {
       const projects = await Project.find({ backers });
       return projects;
-    },    
-    getAllProjectTypes: async () => {      
+    },
+    getAllProjectTypes: async () => {
       try {
         const projectTypes = await ProjectType.find();
         return projectTypes;
@@ -65,55 +61,38 @@ const resolvers = {
       }
     },
     createUser: async (_, args) => {
-    if (args.input) {
-      const newUser = await User.create(args.input);
-      return newUser;
-    } else {
-      const { username, email, password } = args;
-      const user = await User.create({ username, email, password });
-      if (!user) {
-        throw new AuthenticationError;
+      if (args.input) {
+        const newUser = await User.create(args.input);
+        return newUser;
+      } else {
+        const { username, email, password } = args;
+        const user = await User.create({ username, email, password });
+        if (!user) {
+          throw new AuthenticationError;
+        }
+
+        const token = signToken({
+          username: user.username,
+          email: user.email,
+          _id: user._id,
+        });
+
+        return { token, user };
       }
+    },
+    addTointerestedIn: async (_, { projectId, userId }) => {
+      try {
+        const project = await Project.findByIdAndUpdate(
+          projectId,
+          { $addToSet: { interestedIn: userId } },
+          { new: true }
+        );     
 
-      const token = signToken({ 
-        username: user.username,
-        email: user.email,
-        _id: user._id,
-      });
-
-      return { token, user };
-    }
-  },
-  addTointerestedIn: async (projectId, userId) => {
-    try {
-
-      console.log('Received projectId:', userId.userId);
-      // Find the project by projectId
-      const project = await Project.findById(userId.projectId);
-
-      // Check if the project exists
-      if (!project) {
-        throw new Error('Project not found.');
+        return project;
+      } catch (error) {
+        throw new Error(`Error adding backer: ${error.message}`);
       }
-
-      const userIdObjectId = new ObjectId(userId.userId);
-      console.log('userIdObjectId:', userIdObjectId);
-      // Check if the user is already a backer
-      if (project.interestedIn.includes(userIdObjectId)) {
-        throw new Error('User is already a backer for this project.');
-      }
-
-      // Add the user to the backers array of the project
-      project.interestedIn.push(userIdObjectId);
-
-      // Save the updated project
-      await project.save();
-
-      return project;
-    } catch (error) {
-      throw new Error(`Error adding backer: ${error.message}`);
-    }
-  },
+    },
     addBackerToProject: async (_, { projectId, userId }) => {
       const project = await Project.findByIdAndUpdate(
         projectId,
@@ -129,7 +108,7 @@ const resolvers = {
       // Check if password is correct
       const correctPw = await user.isCorrectPassword(password);
       if (!correctPw) throw new AuthenticationError("Incorrect login credentials!");
-      
+
       const token = signToken(user);// Issue token
 
       return { token, user };// Return token and user   
@@ -139,7 +118,7 @@ const resolvers = {
         // Find the project by ID and increment its currentFunding and add userId to backers
         const updatedProject = await Project.findByIdAndUpdate(
           projectId,
-          { 
+          {
             $inc: { currentFunding: amount }, // Increment currentFunding by the specified amount
             $addToSet: { backers: userId } // Add userId to backers array
           },
@@ -164,7 +143,6 @@ const resolvers = {
     interestedIn: async (parent) => {
       return await User.find({ _id: { $in: parent.interestedIn } });
     },
-
   },
 };
 
