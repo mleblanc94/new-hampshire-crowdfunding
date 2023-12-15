@@ -32,6 +32,9 @@ const Home = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [favorites, setFavorites] = useState([]);
   const userId = AuthService.loggedIn() ? AuthService.getProfile().data._id : null;
+  if(!userId) { // If user is not logged in, redirect to login page
+    window.location.assign('/signin');
+  }
   const { loading, error, data } = useQuery(GET_USER_NOT_CREATED, {
     variables: { userId },
   });
