@@ -36,16 +36,20 @@ const Profile = () => {
   const [donatedProjects, setDonatedProjects] = useState([]);
 
   const { loading: loadingCreated, data: data1 } = useQuery(GET_USER_CREATED, {
-    variables: { userId },
-  });
+  variables: { userId },
+  skip: !userId,
+});
 
-  const { loading: loadingInterested, data: data2 } = useQuery(GET_USER_INTERESTED, {
-    variables: { userId },
-  });
+const { loading: loadingInterested, data: data2 } = useQuery(GET_USER_INTERESTED, {
+  variables: { userId },
+  skip: !userId,
+});
 
-  const { loading: loadingDonated, data: data3 } = useQuery(GET_USER_DONATED, {
-    variables: { userId },
-  });
+const { loading: loadingDonated, data: data3 } = useQuery(GET_USER_DONATED, {
+  variables: { userId },
+  skip: !userId,
+});
+
 
   useEffect(() => {
     if (data1 && data2 && data3) {
