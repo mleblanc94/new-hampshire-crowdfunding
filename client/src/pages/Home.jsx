@@ -33,23 +33,19 @@ const Home = () => {
   const [favorites, setFavorites] = useState([]);
 
   const profile = AuthService.loggedIn() ? AuthService.getProfile() : null;
-  const userId = profile?.data?._id;
+const userId = profile?.data?._id;
 
-  const { loading, error, data } = useQuery(GET_USER_NOT_CREATED, {
-    variables: { userId },
-    skip: !userId, // ✅ SKIP query if userId is not available
-  });
+if (!userId) {
+  window.location.assign('/signin');
+  return null; // ⛔ Prevent rendering anything else
+}
 
-  const [addInterestedIn] = useMutation(ADD_INTERESTED_USER);
+const { loading, error, data } = useQuery(GET_USER_NOT_CREATED, {
+  variables: { userId },
+});
 
-  if (!userId) {
-    return (
-      <div className="tc pa4">
-        <h2>You must be logged in to view projects.</h2>
-        <button onClick={() => window.location.assign('/signin')}>Go to Login</button>
-      </div>
-    );
-  }
+const [addInterestedIn] = useMutation(ADD_INTERESTED_USER);
+
 
   if (loading) return <p>Loading...</p>;
 
