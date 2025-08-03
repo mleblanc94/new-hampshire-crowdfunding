@@ -95,7 +95,7 @@ const Signup = () => {
                   />
                 </div>
               </fieldset>
-              {error && <p>Error: {error.message}</p>}
+              {/* {error && <p>Error: {error.message}</p>} */}
             </form>
           </main>
         </article>
