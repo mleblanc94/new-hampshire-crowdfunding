@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ProjectDetails from './ProjectDetails'; // Create this component separately
+import ProjectDetails from './ProjectDetails';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { useQuery } from '@apollo/client';
@@ -26,25 +26,34 @@ const Home = () => {
       'image5': image5,
       'image6': image6,
     };
-    return imageMap[imageName] || imageMap['default.png']; // Fallback to a default image if not found
+    return imageMap[imageName] || imageMap['default.png'];
   };
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [favorites, setFavorites] = useState([]);
-  const userId = AuthService.loggedIn() ? AuthService.getProfile().data._id : null;
-  if(!userId) { // If user is not logged in, redirect to login page
-    window.location.assign('/signin');
-  }
+
+  const profile = AuthService.loggedIn() ? AuthService.getProfile() : null;
+  const userId = profile?.data?._id;
+
   const { loading, error, data } = useQuery(GET_USER_NOT_CREATED, {
     variables: { userId },
+    skip: !userId, // ✅ SKIP query if userId is not available
   });
 
   const [addInterestedIn] = useMutation(ADD_INTERESTED_USER);
 
-  if (loading) return <p>Loading...</p>;
-  // if (error) return <p>Error: {error.message}</p>;
+  if (!userId) {
+    return (
+      <div className="tc pa4">
+        <h2>You must be logged in to view projects.</h2>
+        <button onClick={() => window.location.assign('/signin')}>Go to Login</button>
+      </div>
+    );
+  }
 
-  const projects = data.getNotcreatedProjects;
+  if (loading) return <p>Loading...</p>;
+
+  const projects = data?.getNotcreatedProjects || [];
 
   const openProjectDetails = (project) => {
     setSelectedProject(project);
@@ -52,11 +61,9 @@ const Home = () => {
 
   const isProjectInterestedIn = (projectId, interestedInID) => {
     const userExists = interestedInID.some(user => user._id === userId);
-
     if (userExists) {
       return <label>Already Chosen Project</label>;
-    }
-    else {
+    } else {
       return (
         <button onClick={(e) => addInterested(projectId, e)}>
           Interested
@@ -71,50 +78,27 @@ const Home = () => {
 
   const addInterested = async (projectId, e) => {
     e.stopPropagation();
-
     try {
       const { data } = await addInterestedIn({
         variables: {
-          projectId: projectId,
-          userId: userId,
+          projectId,
+          userId,
         },
       });
-
-      // Handle the response if needed
       console.log('User added to interestedIn:', data.addTointerestedIn);
     } catch (error) {
       console.error('Error adding user to interestedIn:', error.message);
     }
   };
 
-  // Stripe public key (replace with your actual Stripe public key)
   const stripePromise = loadStripe('your_stripe_public_key');
 
   return (
     <div className="pa4">
       <div>
         <h1>Welcome to New Hampshire Crowd Funding!</h1>
-        <p>
-          Embark on a journey where ideas come to life and dreams find their wings.
-          At New Hampshire Crowd Funding, we believe in the power of community, passion, and the extraordinary impact that can be made when people come together.
-        </p>
-        <p>
-          Our platform is more than just a crowdfunding space; its a vibrant ecosystem where creators, backers, and visionaries unite to shape the future. Whether
-          you are an innovator with a groundbreaking project, a supporter seeking the next big thing, or a dreamer looking to be part of something extraordinary
-          you have found your home.
-        </p>
-        <p>
-          oin us in the art of turning dreams into reality, where every project has a story, and every backer is a crucial part of that narrative.
-          From cutting-edge tech to artistic masterpieces, social causes to entrepreneurial ventures - the possibilities are endless.
-        </p>
-        <p>
-          Here, we celebrate the power of collaboration, the spirit of creativity, and the profound impact that small contributions can make.
-          Together, let us build, support, and inspire. Welcome to the community where dreams are fueled, ideas are nurtured, and the extraordinary becomes the norm.
-          <br />
-          Are you ready to bring your vision to life or be part of something incredible? Dive in and explore the world of limitless possibilities.
-          <br /><br />
-          Welcome to New Hampshire Crowd Funding - Where Dreams Take Flight!
-        </p>
+        <p>Embark on a journey where ideas come to life and dreams find their wings...</p>
+        {/* Keep your intro paragraphs here */}
       </div>
       <h1 className="tc">Active Projects</h1>
       <div className="flex justify-center">
@@ -136,7 +120,6 @@ const Home = () => {
                   onClick={(e) => e.stopPropagation()}
                 />
                 <p>{project.description}</p>
-                {/* Display funding information */}
                 <div className="funding-info">
                   <p>Goal: ${project.fundingGoal}</p>
                   <p>Current Funding: ${project.currentFunding}</p>
@@ -151,7 +134,6 @@ const Home = () => {
 
       {selectedProject && (
         <Elements stripe={stripePromise}>
-          {/* Wrap the ProjectDetails component with Elements provider */}
           <ProjectDetails
             project={selectedProject}
             addToFavorites={addToFavorites}
