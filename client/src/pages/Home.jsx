@@ -42,7 +42,7 @@ const Home = () => {
   const [addInterestedIn] = useMutation(ADD_INTERESTED_USER);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  // if (error) return <p>Error: {error.message}</p>;
 
   const projects = data.getNotcreatedProjects;
 
