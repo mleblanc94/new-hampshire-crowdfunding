@@ -103,7 +103,7 @@ const Signin = () => {
                     className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                     onClick={() => loginWithCreds(DEMO_EMAIL, DEMO_PASSWORD)}
                   >
-                    Sign in as Demo
+                    Sign in as Guest
                   </button>
                 </div>
               </fieldset>
