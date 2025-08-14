@@ -1,5 +1,5 @@
 const { User, Project, ProjectType } = require('../models');
-const { AuthenticationError } = require('../utils/auth')
+const { AuthenticationError } = require('apollo-server-express');
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongoose').Types;
 const mongoose = require('mongoose');
@@ -67,9 +67,7 @@ const resolvers = {
       } else {
         const { username, email, password } = args;
         const user = await User.create({ username, email, password });
-        if (!user) {
-          throw new AuthenticationError;
-        }
+        if (!user) { throw new AuthenticationError('User creation failed'); }
 
         const token = signToken({
           username: user.username,
