@@ -3,14 +3,12 @@ import { Link, useLocation } from 'react-router-dom';
 import Auth from '../utils/auth';
 import 'tachyons';
 import './Navigation.css';
-import  Logo  from '../assets/Logo3.png';
+import Logo from '../assets/Logo3.png';
 
 const Navigation = () => {
   const location = useLocation();
 
-  const isCurrentPage = (link) => {
-    return location.pathname === link;
-  };
+  const isCurrentPage = (link) => location.pathname === link;
 
   const logout = (event) => {
     event.preventDefault();
@@ -18,64 +16,73 @@ const Navigation = () => {
   };
 
   return (
-    <nav>
-      
-    
-      <ul className="flex justify-between list ma0 sans-serif f3 lh-copy pv3 links-ul">
-      <li>
+    <nav className="nav-bar shadow-4">
+      <div className="nav-content flex items-center justify-between ph4">
+        {/* Logo */}
+        <Link to="/">
+          <img
+            src={Logo}
+            alt="logo"
+            className="logo-img"
+          />
+        </Link>
 
-<img src={Logo} alt="logo"
-         className="shadow-lg p-1 mb-1 bg-white rounded" />
-</li>        
-        <li>
-          <Link to="/" className={`near-white ${isCurrentPage('/') ? 'fw8' : ''}`}>
-            Home
-          </Link>
-        </li>
-        {
-          Auth.loggedIn() ? (
+        {/* Links */}
+        <ul className="flex list ma0 pa0 items-center">
+          <li className="mh3">
+            <Link
+              to="/"
+              className={`nav-link ${isCurrentPage('/') ? 'active' : ''}`}
+            >
+              Home
+            </Link>
+          </li>
+
+          {Auth.loggedIn() ? (
             <>
-              <li>
-                <Link to="/create" className={`near-white ${isCurrentPage('/create') ? 'fw8' : ''}`}>
+              <li className="mh3">
+                <Link
+                  to="/create"
+                  className={`nav-link ${isCurrentPage('/create') ? 'active' : ''}`}
+                >
                   Create
                 </Link>
               </li>
-              <li>
-                <Link to="/profile" className={`near-white ${isCurrentPage('/profile') ? 'fw8' : ''}`}>
+              <li className="mh3">
+                <Link
+                  to="/profile"
+                  className={`nav-link ${isCurrentPage('/profile') ? 'active' : ''}`}
+                >
                   Profile
                 </Link>
               </li>
-              <li>
-                <div>
-                  <button className="btn btn-lg btn-light m-2" onClick={logout}>
-                    Logout
-                  </button>
-                </div>
+              <li className="mh3">
+                <button
+                  className="nav-btn logout-btn"
+                  onClick={logout}
+                >
+                  Logout
+                </button>
               </li>
             </>
           ) : (
             <>
-              <li>
-                <div>
-                  <Link to="/signin">
-                    <button className="btn btn-lg btn-info m-5 signin-button" to="/signin">
-                      Login
-                    </button>
-                  </Link>
-                  <Link to="/signup">
-                    <button className="btn btn-lg btn-light m-2 signup-button" to="/signup">
-                      Signup
-                    </button>
-                  </Link>
-                </div>
+              <li className="mh2">
+                <Link to="/signin">
+                  <button className="nav-btn signin-btn">Login</button>
+                </Link>
+              </li>
+              <li className="mh2">
+                <Link to="/signup">
+                  <button className="nav-btn signup-btn">Signup</button>
+                </Link>
               </li>
             </>
           )}
-
-      </ul>
+        </ul>
+      </div>
     </nav>
   );
 };
 
 export default Navigation;
-

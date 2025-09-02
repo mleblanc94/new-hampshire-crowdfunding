@@ -1,23 +1,62 @@
-.signin-button, .signup-button {
-    color: black;
-    margin: 2px;
-    background-color: #9eebcf;
-    border-radius: 2px;
-    cursor: pointer;
+/* Navigation.css */
+
+.nav-bar {
+  background-color: #ccd5ae;
 }
 
-.signup-button {
-    margin-right: 10px;
+.nav-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 64px;
 }
 
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #CCD5AE;
+.logo-img {
+  height: 48px;
+  width: auto;
 }
 
-a {
-    text-decoration: none;
+.nav-link {
+  color: #222;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease, border-bottom 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #000;
+  border-bottom: 2px solid #6b705c;
+}
+
+.nav-link.active {
+  border-bottom: 2px solid #000;
+}
+
+.nav-btn {
+  background-color: #9eebcf;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.nav-btn:hover {
+  background-color: #8adbbf;
+  transform: translateY(-1px);
+}
+
+.signin-btn {
+  background-color: #a0c4ff;
+  color: #000;
+}
+
+.signup-btn {
+  background-color: #ffb4a2;
+  color: #000;
+}
+
+.logout-btn {
+  background-color: #e63946;
+  color: #fff;
 }

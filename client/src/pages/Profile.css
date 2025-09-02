@@ -24,4 +24,10 @@
   .project-list li {
     margin-bottom: 8px;
   }
+
+  /* Profile.css */
+section + section {
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
   
