@@ -64,3 +64,22 @@ export const UPDATE_FUNDING = gql`
     }
   }
 `;
+
+export const DELETE_PROJECT = gql`
+  mutation DeleteProject($projectId: ID!) {
+    deleteProject(projectId: $projectId) {
+      _id
+      success
+      message
+    }
+  }
+`;
+
+export const REMOVE_PROJECT_INTEREST = gql`
+  mutation RemoveProjectInterest($projectId: ID!, $userId: ID!) {
+    removeFromInterestedIn(projectId: $projectId, userId: $userId) {
+      _id
+      interestedIn { _id }
+    }
+  }
+`;
