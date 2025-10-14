@@ -16,7 +16,7 @@ const Signin = () => {
 
   // Demo creds (prefer env vars; fallback to literals)
   const DEMO_EMAIL = import.meta?.env?.VITE_DEMO_EMAIL || 'guest@gmail.com';
-  const DEMO_PASSWORD = import.meta?.env?.VITE_DEMO_PASSWORD || 'Guest';
+  const DEMO_PASSWORD = import.meta?.env?.VITE_DEMO_PASSWORD || 'Guest20';
 
   // Prevent double-submit under StrictMode
   const autoLoginAttempted = useRef(false);
